@@ -6,6 +6,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import scinde.controller.GameController;
 import scinde.controller.GameTransition;
+import scinde.controller.SoundController;
 import scinde.view.node.ShipView;
 import scinde.view.node.SpaceBackground;
 
@@ -55,6 +56,7 @@ public class MainPane extends Pane {
 		});
 		
 		this.getChildren().addAll(ship, menu);
+		SoundController.playMenu();
 
 	}
 	
