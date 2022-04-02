@@ -16,6 +16,7 @@ import javafx.util.Duration;
 import scinde.controller.GameController;
 import scinde.model.entity.Entity;
 import scinde.model.entity.enemies.Enemy;
+import scinde.model.entity.enemies.OpenPatternFollower;
 import scinde.model.utils.Position;
 import scinde.model.utils.hitbox.HitBox;
 import scinde.view.node.ShipView;
@@ -77,10 +78,10 @@ public class ShipGroup extends Group {
 			this.hitGroup.getChildren().add(entity.getHitbox().getShape());
 			if(entity instanceof Enemy enemy)
 			{
-				if(!enemy.getPattern().isEmpty())
+				if(enemy.getPattern() != null && !enemy.getPattern().getPositions().isEmpty())
 				{
 					Position old = null;
-					for(Position pos : enemy.getPattern())
+					for(Position pos : enemy.getPattern().getPositions())
 					{
 						Circle dot = new Circle(2);
 						dot.setFill(color);
@@ -95,10 +96,10 @@ public class ShipGroup extends Group {
 						}
 						old = pos;
 					}
-					if(enemy.getPattern().size()>2)
+					if(enemy.getPattern().getPositions().size()>2 && !(enemy.getPattern() instanceof OpenPatternFollower))
 					{
-						Position first = enemy.getPattern().get(0);
-						Position last = enemy.getPattern().get(enemy.getPattern().size()-1);
+						Position first = enemy.getPattern().getPositions().get(0);
+						Position last = enemy.getPattern().getPositions().get(enemy.getPattern().getPositions().size()-1);
 						Line line = new Line(first.getX(), first.getY(), last.getX(), last.getY());
 						line.setStroke(color);
 						this.hitGroup.getChildren().add(line);

@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 import scinde.model.entity.Entity;
 import scinde.model.entity.enemies.Enemy;
+import scinde.model.entity.enemies.OpenPatternFollower;
+import scinde.model.entity.enemies.PatternFollower;
 import scinde.model.registry.Identifier;
 import scinde.model.registry.Registry;
 import scinde.model.utils.Position;
@@ -37,12 +39,31 @@ public class WorldMaker {
 				}
 				if(enemies.getJSONObject(i).has("pattern"))
 				{
-					JSONArray patterns = enemies.getJSONObject(i).getJSONArray("pattern");
-					List<Position> enemyPattern = new ArrayList<>();
-					for (int j = 0; j < patterns.length(); j++) {
-						enemyPattern.add(new Position(patterns.getJSONObject(j).getFloat("x"), patterns.getJSONObject(j).getFloat("y")));
+					JSONObject pattern = enemies.getJSONObject(i).getJSONObject("pattern");
+					boolean isLooping = true;
+					if(pattern.has("islooping"))
+					{
+						isLooping = pattern.getBoolean("islooping");
 					}
-					entity.setPattern(enemyPattern, startReverse);
+					if(!isLooping)
+					{
+						startReverse = false;
+					}
+					JSONArray points = pattern.getJSONArray("points");
+					if(points.length() >= 2)
+					{
+						List<Position> enemyPattern = new ArrayList<>();
+						for (int j = 0; j < points.length(); j++) {
+							enemyPattern.add(new Position(points.getJSONObject(j).getFloat("x"), points.getJSONObject(j).getFloat("y")));
+						}
+						PatternFollower patternFollower = null;
+						if(isLooping)
+							patternFollower = new PatternFollower(entity, enemyPattern);
+						else
+							patternFollower = new OpenPatternFollower(entity, enemyPattern);
+						
+						entity.setPattern(patternFollower, startReverse);
+					}
 				}
 				world.spawnEntity(entity);
 			}
