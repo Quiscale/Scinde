@@ -100,5 +100,16 @@ public class World {
 		}
 		return false;
 	}
+
+	public EntityHolder getEntityAt(Position pos) {
+		for(EntityHolder entity : entities)
+		{
+			if(entity.getPos() == pos)
+			{
+				return entity;
+			}
+		}
+		return null;
+	}
 	
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import scinde.model.entity.Entity;
+import scinde.model.utils.Position;
 import scinde.model.world.World;
 
 public class Moula extends Enemy{
@@ -13,12 +14,12 @@ public class Moula extends Enemy{
 	}
 
 	@Override
-	public void onDeath(World world) {
+	public void onDeath(World world, Position pos) {
 		//do nothing
 	}
 
 	@Override
-	public void onHit(World world, Entity other) {
+	public void onHit(World world, Position pos, Entity other) {
 		// TODO Auto-generated method stub
 		
 	}

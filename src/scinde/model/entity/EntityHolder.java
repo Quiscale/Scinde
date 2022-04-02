@@ -1,7 +1,9 @@
 package scinde.model.entity;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import scinde.controller.UpdateTimer;
 import scinde.model.entity.enemies.Enemy;
 import scinde.model.entity.enemies.PatternFollower;
 import scinde.model.entity.player.Player;
@@ -22,6 +24,7 @@ public class EntityHolder implements IUpdatable {
 	private float lifePoints;
 	private HitBox hitbox;
 	private PatternFollower pattern;
+	private int invincibilityTime;
 
 	public EntityHolder(Entity entity) {
 		this.entity = entity;
@@ -30,6 +33,7 @@ public class EntityHolder implements IUpdatable {
 		this.velocity = new Velocity(0, 0);
 		this.pos = new Position();
 		this.lifePoints = entity.getMaxLifePoints();
+		invincibilityTime = 0;
 	}
 
 	public Entity getEntity() {
@@ -37,17 +41,17 @@ public class EntityHolder implements IUpdatable {
 	}
 
 	public void hit(World world, EntityHolder from) {
-		if (from.entity.canDamage(entity)) {
+		if (from.entity.canDamage(entity) && invincibilityTime <= 0) {
 			this.lifePoints -= from.entity.getDamage();
+			entity.onHit(world, pos, from.getEntity());
 			if (lifePoints <= 0) {
-				entity.onDeath(world);
+				entity.onDeath(world, pos);
 			}
 		}
 
 		Velocity additive = Velocity.createVector(from.getPos(), pos).toUnit().mult(ENERGY_CONSERVATION);
 		this.setVelocityRaw(additive.mult((float)from.getVelocity().getMagnitude()).mult(1+entity.bouncyness));
 		from.setVelocityRaw(additive.inverse().mult((float)velocity.getMagnitude()).mult(1+from.getEntity().bouncyness));
-		entity.onHit(world, from.getEntity());
 		if (pattern != null) {
 			pattern.follow();
 		}
@@ -58,16 +62,10 @@ public class EntityHolder implements IUpdatable {
 	}
 
 	public void setVelocityRaw(Velocity v) {
-		if (entity instanceof Player) {
-			System.out.println("raw " + v);
-		}
 		this.velocity = v;
 	}
 
 	public void setVelocity(Velocity v) {
-		if (entity instanceof Player) {
-			System.out.println("base " + v);
-		}
 		this.velocity = new Velocity((velocity.getX() + v.getX()) / 2, (v.getY() + velocity.getY()) / 2);
 	}
 
@@ -135,6 +133,14 @@ public class EntityHolder implements IUpdatable {
 		if (pattern != null) {
 			pattern.follow();
 		}
+		if(invincibilityTime > 0)
+		{
+			invincibilityTime -= UpdateTimer.ELAPSED_TIME;
+		}
 		this.velocity = velocity.div(1 + SLOW_COEFFICIENT);
+	}
+
+	public void setInvincibleFor(int i) {
+		invincibilityTime = i;
 	}
 }

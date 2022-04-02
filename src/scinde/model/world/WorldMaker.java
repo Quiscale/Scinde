@@ -124,7 +124,6 @@ public class WorldMaker {
 					}
 				}
 			}
-			System.out.println(hitboxGroup.size());
 			for(HitBox box : hitboxGroup)
 			{
 				world.addHitbox(box);
