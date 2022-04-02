@@ -8,6 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Scale;
@@ -15,8 +16,10 @@ import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 import scinde.controller.GameController;
 import scinde.model.entity.Entity;
+import scinde.model.entity.EntityHolder;
 import scinde.model.entity.enemies.Enemy;
 import scinde.model.entity.enemies.OpenPatternFollower;
+import scinde.model.entity.enemies.PatternFollower;
 import scinde.model.utils.Position;
 import scinde.model.utils.hitbox.HitBox;
 import scinde.view.node.ShipView;
@@ -66,22 +69,26 @@ public class ShipGroup extends Group {
 			box.getShape().setFill(null);
 			this.hitGroup.getChildren().add(box.getShape());
 		}
-		for(Entity entity : GameController.LEVEL.getLeft().getEntities())
+
+		Shape player = GameController.LEVEL.getPlayer().getHitbox().getShape();
+		player.setStroke(Color.RED);
+		player.setFill(null);
+		this.hitGroup.getChildren().add(player);
+		
+		for(EntityHolder entity : GameController.LEVEL.getLeft().getEntities())
 		{
 			Random rand = new Random();
 			Color color = new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1);
 			entity.getHitbox().getShape().setStroke(color);
 			entity.getHitbox().getShape().setFill(null);
-			entity.getHitbox().getIdDisplay().setStroke(color);
-			entity.getHitbox().getIdDisplay().setFont(Font.font(20));
-			this.hitGroup.getChildren().add(entity.getHitbox().getIdDisplay());
 			this.hitGroup.getChildren().add(entity.getHitbox().getShape());
-			if(entity instanceof Enemy enemy)
+			if(entity.getPattern() != null)
 			{
-				if(enemy.getPattern() != null && !enemy.getPattern().getPositions().isEmpty())
+				PatternFollower pattern = entity.getPattern();
+				if(pattern != null && !pattern.getPositions().isEmpty())
 				{
 					Position old = null;
-					for(Position pos : enemy.getPattern().getPositions())
+					for(Position pos : pattern.getPositions())
 					{
 						Circle dot = new Circle(2);
 						dot.setFill(color);
@@ -96,12 +103,13 @@ public class ShipGroup extends Group {
 						}
 						old = pos;
 					}
-					if(enemy.getPattern().getPositions().size()>2 && !(enemy.getPattern() instanceof OpenPatternFollower))
+					if(pattern.getPositions().size()>2 && !(pattern instanceof OpenPatternFollower))
 					{
-						Position first = enemy.getPattern().getPositions().get(0);
-						Position last = enemy.getPattern().getPositions().get(enemy.getPattern().getPositions().size()-1);
+						Position first = pattern.getPositions().get(0);
+						Position last = pattern.getPositions().get(pattern.getPositions().size()-1);
 						Line line = new Line(first.getX(), first.getY(), last.getX(), last.getY());
 						line.setStroke(color);
+						line.setFill(color);
 						this.hitGroup.getChildren().add(line);
 					}
 				}

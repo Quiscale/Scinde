@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import scinde.model.entity.Entity;
+import scinde.model.entity.EntityHolder;
 import scinde.model.entity.enemies.Enemy;
 import scinde.model.entity.enemies.OpenPatternFollower;
 import scinde.model.entity.enemies.PatternFollower;
@@ -28,7 +29,8 @@ public class WorldMaker {
 			for (int i = 0; i < enemies.length(); i++) {
 				JSONObject position = enemies.getJSONObject(i).getJSONObject("position");
 				String id = enemies.getJSONObject(i).getString("id");
-				Enemy entity = Registry.ENEMY.get(new Identifier(id)).build();
+				Enemy enemy = Registry.ENEMY.get(new Identifier(id));
+				EntityHolder entity = new EntityHolder(enemy);
 				if (position != null) {
 					entity.setPosition(new Position(position.getFloat("x"), position.getFloat("y")));
 				}

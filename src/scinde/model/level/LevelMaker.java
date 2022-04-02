@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.json.JSONObject;
 
 import scinde.model.entity.Entity;
+import scinde.model.entity.EntityHolder;
 import scinde.model.entity.player.Player;
 import scinde.model.registry.Identifier;
 import scinde.model.registry.Registry;
@@ -48,13 +49,14 @@ public class LevelMaker {
 		
 		JSONObject position = object.getJSONObject("player").getJSONObject("position");
 		String id = "player";
-		Entity entity = Registry.ENTITY.get(new Identifier(id)).provide();
+		Entity data = Registry.ENTITY.get(new Identifier(id));
+		EntityHolder entity = new EntityHolder(data);
 		if (position != null) {
 			entity.setPosition(new Position(position.getFloat("x"), position.getFloat("y")));
 		}
-		if(entity instanceof Player player)
+		if(data instanceof Player player)
 		{
-			return new Level(levelName, player, new ArrayList<>(), left, right);
+			return new Level(levelName, entity, new ArrayList<>(), left, right);
 		}
 		else
 		{

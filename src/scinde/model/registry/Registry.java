@@ -16,6 +16,7 @@ import scinde.model.entity.Entities;
 import scinde.model.entity.Entity;
 import scinde.model.entity.EntityBuilder;
 import scinde.model.entity.enemies.Enemies;
+import scinde.model.entity.enemies.Enemy;
 import scinde.model.entity.enemies.EnemyBuilder;
 import scinde.model.triggerable.TriggerProvider;
 import scinde.model.triggerable.Triggerables;
@@ -84,14 +85,14 @@ public abstract class Registry<T> implements Iterable<T>{
 	private static Map<Identifier, DefaultProvider<?>> DEFAULT_ENTRIES = new HashMap<>();
 	
 	public static final Identifier ROOT_KEY = new Identifier("root");
-	public static final RegistryKey<Registry<EntityBuilder>> ENTITY_KEY = Registry.createRegistryKey("entity");
-	public static final RegistryKey<Registry<EnemyBuilder>> ENEMY_KEY = Registry.createRegistryKey("enemy");
+	public static final RegistryKey<Registry<Entity>> ENTITY_KEY = Registry.createRegistryKey("entity");
+	public static final RegistryKey<Registry<Enemy>> ENEMY_KEY = Registry.createRegistryKey("enemy");
 	public static final RegistryKey<Registry<TriggerProvider>> TRIGGER_KEY = Registry.createRegistryKey("trigger");
 	
 	public static final Registry<Registry<?>> ROOT = new SimpleRegistry<Registry<?>>(Registry.createRegistryKey("root"));
-	public static final SimpleRegistry<EntityBuilder> ENTITY = Registry.create(ENTITY_KEY, ()->Entities.PLAYER);
-	public static final SimpleRegistry<EnemyBuilder> ENEMY = Registry.create(ENEMY_KEY, ()->Enemies.MOULA);
-	public static final SimpleRegistry<TriggerProvider> TRIGGER = Registry.create(TRIGGER_KEY, ()->Triggerables.DOOR);
+	public static final SimpleRegistry<Entity> ENTITY = Registry.create(ENTITY_KEY, ()->Entities.PLAYER);
+	public static final SimpleRegistry<Enemy> ENEMY = Registry.create(ENEMY_KEY, ()->Enemies.MOULA);
+	public static final SimpleRegistry<TriggerProvider> TRIGGER = Registry.create(TRIGGER_KEY, ()->Triggerables.DOOR_BUTTON);
 	
 	private static <T> RegistryKey<Registry<T>> createRegistryKey(String id)
 	{

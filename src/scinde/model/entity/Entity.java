@@ -2,93 +2,40 @@ package scinde.model.entity;
 
 import java.util.List;
 
-import scinde.model.level.Level;
-import scinde.model.utils.IUpdatable;
-import scinde.model.utils.Position;
-import scinde.model.utils.Velocity;
 import scinde.model.utils.hitbox.HitBox;
 import scinde.model.world.World;
 
-public abstract class Entity implements IUpdatable{
-	private HitBox hitbox;
-	private Position pos;
-	private Velocity velocity;
-	private float lifePoints;
+public abstract class Entity{
 	
-	protected Entity(HitBox box)
-	{
-		this(new Position(), box);
-	}
+	protected float maxLifePoints;
+	protected boolean canMove;
+	protected double velocityUnit;
+	protected float bouncyness;
 	
-	public void hit(float damage)
+	protected Entity(float maxLifePoints, boolean canMove, float bouncyNess, double velocityUnit)
 	{
-		this.lifePoints -= damage;
-	}
-	
-	public float getLifePoints()
-	{
-		return lifePoints;
+		this.maxLifePoints = maxLifePoints;
+		this.canMove = canMove;
+		this.velocityUnit = velocityUnit;
+		this.bouncyness = bouncyNess;
 	}
 	
-	protected Entity(Position pos, HitBox box)
+	public float getMaxLifePoints()
 	{
-		hitbox = box;
-		this.hitbox.init();
-		this.pos = pos;
-		hitbox.moveTo(pos);
-		velocity = new Velocity(0, 0);
-	}
-	
-	public void setVelocity(Velocity velocity)
-	{
-		this.velocity = velocity;
-	}
-	
-	public void setPosition(Position pos)
-	{
-		this.pos = pos;
-		this.hitbox.moveTo(pos);		
-	}
-	
-	protected void move()
-	{
-		Position pos = new Position(this.pos.getX()+velocity.getX(), this.pos.getY()+velocity.getY());		
-		this.pos = pos;
-		this.hitbox.moveTo(pos);
-	}
-
-	public HitBox getHitbox() {
-		return hitbox;
-	}
-
-	public Position getPos() {
-		return pos;
-	}
-	
-	public Velocity getVelocity()
-	{
-		return velocity;
-	}
-	
-	public boolean update(List<World> worlds)
-	{
-		this.move();
-		for(World world : worlds)
-		{
-			if(!world.detectCollision(this))
-			{
-				setVelocity(getVelocity().inverse());
-				move(); 
-				setVelocity(getVelocity().inverse());
-				return false;
-			}
-		}
-		return true;
+		return maxLifePoints;
 	}
 	
 	public void onHitWall() {}
 	
+	public abstract float getDamage();
+	
 	public abstract void onHit(World world, Entity other);
 	
 	public abstract void onDeath(World world);
+	
+	public abstract void onUpdate(List<World> worlds);
+
+	public abstract HitBox provideHitbox();
+
+	protected abstract boolean canDamage(Entity entity);
 }

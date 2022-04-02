@@ -2,12 +2,13 @@ package scinde.model.entity.enemies;
 
 import java.util.List;
 
+import scinde.model.entity.EntityHolder;
 import scinde.model.utils.Position;
 import scinde.model.utils.Velocity;
 
 public class OpenPatternFollower extends PatternFollower{
 
-	public OpenPatternFollower(Enemy owner, List<Position> path) {
+	public OpenPatternFollower(EntityHolder owner, List<Position> path) {
 		super(owner, path);
 	}
 	

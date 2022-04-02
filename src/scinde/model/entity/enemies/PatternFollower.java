@@ -3,19 +3,20 @@ package scinde.model.entity.enemies;
 import java.util.List;
 
 import scinde.controller.UpdateTimer;
+import scinde.model.entity.EntityHolder;
 import scinde.model.utils.Position;
 import scinde.model.utils.Velocity;
 
 public class PatternFollower {
-	protected Enemy enemy;
+	protected EntityHolder enemy;
 	protected List<Position> pattern;
 	protected int tracker;
-	private float velocityUnit;
+	private double velocityUnit;
 	private int waitingCounter;
 	private boolean forceNextStep;
 	protected boolean followReverse;
 	
-	public PatternFollower(Enemy owner, List<Position> path)
+	public PatternFollower(EntityHolder owner, List<Position> path)
 	{
 		pattern = path;
 		enemy = owner;
@@ -26,7 +27,7 @@ public class PatternFollower {
 		return pattern;
 	}
 	
-	public void setVelocityUnit(float value)
+	public void setVelocityUnit(double value)
 	{
 		this.velocityUnit = value;
 	}

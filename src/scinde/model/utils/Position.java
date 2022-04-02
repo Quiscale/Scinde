@@ -1,39 +1,47 @@
 package scinde.model.utils;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
 public class Position {
-	private double x;
-	private double y;
+	private DoubleProperty x;
+	private DoubleProperty y;
 	
 	public Position()
 	{
-		this.x = 0;
-		this.y = 0;
+		this.x = new SimpleDoubleProperty(0);
+		this.y = new SimpleDoubleProperty(0);
 	}
 
 	public Position(double x, double y) {
-		this.x = x;
-		this.y = y;
+
+		this.x = new SimpleDoubleProperty(x);
+		this.y = new SimpleDoubleProperty(y);
 	}
 
 	public double getX() {
-		return x;
+		return x.get();
 	}
 
 	public double getY() {
-		return y;
-	}
-	
-	public void translate(Position p)
-	{
-		this.x += p.getX();
+		return y.get();
 	}
 	
 	public String toString()
 	{
-		return "("+this.x+","+this.y+")";
+		return "("+this.x.get()+","+this.y.get()+")";
+	}
+	
+	public DoubleProperty xProperty()
+	{
+		return x;
+	}
+	public DoubleProperty yProperty()
+	{
+		return y;
 	}
 
 	public double diff(Position position) {
-		return Math.sqrt(Math.pow(x-position.getX(), 2)+Math.pow(y-position.getY(), 2));
+		return Math.sqrt(Math.pow(x.get()-position.getX(), 2)+Math.pow(y.get()-position.getY(), 2));
 	}
 }
