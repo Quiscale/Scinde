@@ -1,5 +1,7 @@
 package scinde.entity;
 
+import java.util.List;
+
 import scinde.utils.IUpdatable;
 import scinde.utils.Position;
 import scinde.utils.Velocity;
@@ -35,7 +37,7 @@ public abstract class Entity implements IUpdatable{
 		this.hitbox.moveTo(pos);		
 	}
 	
-	private void move()
+	protected void move()
 	{
 		Position pos = new Position(this.pos.getX()+velocity.getX(), this.pos.getY()+velocity.getY());
 		this.pos = pos;
@@ -55,14 +57,18 @@ public abstract class Entity implements IUpdatable{
 		return velocity;
 	}
 	
-	public void update(World world)
+	public void update(List<World> worlds)
 	{
 		this.move();
-		if(!world.entityCanMove(this))
+		for(World world : worlds)
 		{
-			setVelocity(getVelocity().inverse());
-			move(); 
-			setVelocity(getVelocity().inverse());
+			if(!world.entityCanMove(this))
+			{
+				setVelocity(getVelocity().inverse());
+				move(); 
+				setVelocity(getVelocity().inverse());
+				return;
+			}
 		}
 	}
 	

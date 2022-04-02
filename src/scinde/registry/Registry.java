@@ -12,7 +12,9 @@ import com.google.common.collect.Iterators;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
+import scinde.entity.Entities;
 import scinde.entity.Entity;
+import scinde.entity.EntityBuilder;
 
 public abstract class Registry<T> implements Iterable<T>{
 	
@@ -78,10 +80,10 @@ public abstract class Registry<T> implements Iterable<T>{
 	private static Map<Identifier, DefaultProvider<?>> DEFAULT_ENTRIES = new HashMap<>();
 	
 	public static final Identifier ROOT_KEY = new Identifier("root");
-	public static final RegistryKey<Registry<Entity>> ENTITY_KEY = Registry.createRegistryKey("entity");
+	public static final RegistryKey<Registry<EntityBuilder>> ENTITY_KEY = Registry.createRegistryKey("entity");
 	
 	public static final Registry<Registry<?>> ROOT = new SimpleRegistry<Registry<?>>(Registry.createRegistryKey("root"));
-	public static final DefaultedRegistry<Entity> ENTITY = Registry.create(ENTITY_KEY, "null", ()->null);
+	public static final SimpleRegistry<EntityBuilder> ENTITY = Registry.create(ENTITY_KEY, ()->Entities.PLAYER);
 	
 	private static <T> RegistryKey<Registry<T>> createRegistryKey(String id)
 	{

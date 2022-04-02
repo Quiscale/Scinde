@@ -5,10 +5,23 @@ import scinde.utils.Position;
 
 public abstract class HitBox {
 	private Shape shape;
+	private float offetX;
+	private float offsetY;
 	
 	protected HitBox()
 	{
 		this.shape = createShape();
+	}
+	
+	public HitBox setOffsetX(float x)
+	{
+		this.offetX = x;
+		return this;
+	}
+	public HitBox setOffsetY(float y)
+	{
+		this.offsetY = y;
+		return this;
 	}
 	
 	public Shape getShape()
