@@ -1,6 +1,8 @@
 package scinde;
 
 import javafx.application.Application;
+import scinde.level.Level;
+import scinde.level.LevelMaker;
 import scinde.view.IHM;
 
 public class Main {
@@ -20,7 +22,13 @@ public class Main {
 	public static void main(String[] args) {
 		
 		Application.launch(IHM.class, args);
-		
+		try {
+			Level level = new LevelMaker("level1").make();
+			System.out.println(level.getLeft().getBlocks().get(0).getShape());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	// ////////////////////////////////////////////////////////////////////////

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import scinde.entity.Entity;
+import scinde.triggerable.Triggerable;
+import scinde.utils.Position;
 import scinde.utils.Velocity;
 import scinde.utils.hitbox.HitBox;
 
@@ -11,11 +13,13 @@ public class World {
 	
 	private List<Entity> entities;
 	private List<HitBox> blocks;
+	private List<Triggerable> triggerables; 
 	
 	public World()
 	{
 		entities = new ArrayList<>();
 		blocks = new ArrayList<>();
+		triggerables = new ArrayList<>();
 	}
 	
 	public List<HitBox> getBlocks()
@@ -28,6 +32,11 @@ public class World {
 		return entities;
 	}
 	
+	public List<Triggerable> getTriggerables()
+	{
+		return triggerables;
+	}
+	
 	public void spawnEntity(Entity e)
 	{
 		this.entities.add(e);
@@ -36,6 +45,11 @@ public class World {
 	public void addHitbox(HitBox h)
 	{
 		this.blocks.add(h);
+	}
+	
+	public void addTriggerable(Triggerable t)
+	{
+		this.triggerables.add(t);
 	}
 
 	public List<HitBox> getHitboxes()
@@ -52,14 +66,28 @@ public class World {
 		return boxes;
 	}
 	
+	public void triggerActivables(Entity fromPrespective)
+	{
+		for(Triggerable trigger : triggerables)
+		{
+			if(trigger.getTrigger().overlap(fromPrespective.getHitbox()))
+			{
+				trigger.onTrigger(this);
+			}
+		}
+	}
+	
 	public boolean entityCanMove(Entity entity) {
-		boolean canMove = true;
 		for(Entity other : entities)
 		{
 			if(other != entity && other.getHitbox().contains(entity.getHitbox()))
 			{
-				other.onHit(entity);
-				canMove = false;
+				other.onHit(this, entity);
+				if(entity.getLifePoints() <= 0)
+				{
+					entity.onDeath(this);
+				}
+				return false;
 			}
 		}
 		for(HitBox other : blocks)
@@ -69,7 +97,7 @@ public class World {
 				return false;
 			}
 		}
-		return canMove;
+		return true;
 	}
 	
 }

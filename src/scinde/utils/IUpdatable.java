@@ -1,7 +1,9 @@
 package scinde.utils;
 
+import java.util.List;
+
 import scinde.world.World;
 
 public interface IUpdatable {
-	public void update(World world);
+	public void update(List<World> worlds);
 }

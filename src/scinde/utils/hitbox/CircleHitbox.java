@@ -11,7 +11,6 @@ public class CircleHitbox extends HitBox{
 	
 	public CircleHitbox(float radius)
 	{
-		super();
 		this.radius = radius;
 	}
 	

@@ -1,5 +1,8 @@
 package scinde.entity;
 
+import java.util.List;
+
+import scinde.level.Level;
 import scinde.utils.IUpdatable;
 import scinde.utils.Position;
 import scinde.utils.Velocity;
@@ -7,18 +10,30 @@ import scinde.utils.hitbox.HitBox;
 import scinde.world.World;
 
 public abstract class Entity implements IUpdatable{
-	HitBox hitbox;
-	Position pos;
-	Velocity velocity;
+	private HitBox hitbox;
+	private Position pos;
+	private Velocity velocity;
+	private float lifePoints;
 	
 	protected Entity(HitBox box)
 	{
 		this(new Position(), box);
 	}
 	
+	public void hit(float damage)
+	{
+		this.lifePoints -= damage;
+	}
+	
+	public float getLifePoints()
+	{
+		return lifePoints;
+	}
+	
 	protected Entity(Position pos, HitBox box)
 	{
 		hitbox = box;
+		this.hitbox.init();
 		this.pos = pos;
 		hitbox.moveTo(pos);
 		velocity = new Velocity(0, 0);
@@ -35,7 +50,7 @@ public abstract class Entity implements IUpdatable{
 		this.hitbox.moveTo(pos);		
 	}
 	
-	private void move()
+	protected void move()
 	{
 		Position pos = new Position(this.pos.getX()+velocity.getX(), this.pos.getY()+velocity.getY());
 		this.pos = pos;
@@ -55,16 +70,22 @@ public abstract class Entity implements IUpdatable{
 		return velocity;
 	}
 	
-	public void update(World world)
+	public void update(List<World> worlds)
 	{
 		this.move();
-		if(!world.entityCanMove(this))
+		for(World world : worlds)
 		{
-			setVelocity(getVelocity().inverse());
-			move(); 
-			setVelocity(getVelocity().inverse());
+			if(!world.entityCanMove(this))
+			{
+				setVelocity(getVelocity().inverse());
+				move(); 
+				setVelocity(getVelocity().inverse());
+				return;
+			}
 		}
 	}
 	
-	public abstract void onHit(Entity other);
+	public abstract void onHit(World world, Entity other);
+	
+	public abstract void onDeath(World world);
 }
