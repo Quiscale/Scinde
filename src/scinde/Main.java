@@ -27,7 +27,7 @@ public class Main {
 		Application.launch(IHM.class, args);
 		try {
 			Level level = new LevelMaker("level1").make();
-			System.out.println(level.getLeft().getBlocks().get(0).getShape());
+			System.out.println(level.getLeft().getBlocks().get(0));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

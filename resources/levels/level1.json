@@ -6,16 +6,23 @@
 				"id":"moula"
 			}
 		],		
-		"hitboxgroups":[
+		"hitboxes":[
 			{
-				"hitboxes":[
-					{
-						"type":"rectangle",
-						"width":100,
-						"height":50
-					}
-				],						
-				"position": {"x":100, "y":100}
+				"type":"rectangle",
+				"width":10,
+				"height":5,	
+				"position": {"x":10, "y":2.5}
+			},
+			{
+				"type":"rectangle",
+				"width":5,
+				"height":10,
+				"position": {"x":10, "y":4.5}
+			},
+			{
+				"type":"circle",
+				"radius":10,
+				"position": {"x":10, "y":4.5}
 			}
 		]
 	},
