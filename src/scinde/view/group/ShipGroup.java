@@ -1,11 +1,15 @@
 package scinde.view.group;
 
+import java.util.Random;
+
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
@@ -56,15 +60,21 @@ public class ShipGroup extends Group {
 
 	public void showHitboxes() {
 		
-		System.out.println("HEY");
-		
-		for(HitBox box : GameController.LEVEL.getLeft().getHitboxes()) {
+		for(HitBox box : GameController.LEVEL.getLeft().getBlocks()) {
 			box.getShape().setStroke(Color.GREEN);
 			box.getShape().setFill(null);
 			this.hitGroup.getChildren().add(box.getShape());
 		}
 		for(Entity entity : GameController.LEVEL.getLeft().getEntities())
 		{
+			Random rand = new Random();
+			Color color = new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1);
+			entity.getHitbox().getShape().setStroke(color);
+			entity.getHitbox().getShape().setFill(null);
+			entity.getHitbox().getIdDisplay().setStroke(color);
+			entity.getHitbox().getIdDisplay().setFont(Font.font(20));
+			this.hitGroup.getChildren().add(entity.getHitbox().getIdDisplay());
+			this.hitGroup.getChildren().add(entity.getHitbox().getShape());
 			if(entity instanceof Enemy enemy)
 			{
 				if(!enemy.getPattern().isEmpty())
@@ -73,14 +83,14 @@ public class ShipGroup extends Group {
 					for(Position pos : enemy.getPattern())
 					{
 						Circle dot = new Circle(2);
-						dot.setFill(Color.YELLOW);
+						dot.setFill(color);
 						dot.setTranslateX(pos.getX());
 						dot.setTranslateY(pos.getY());
 						this.hitGroup.getChildren().add(dot);
 						if(old != null)
 						{
 							Line line = new Line(pos.getX(), pos.getY(), old.getX(), old.getY());
-							line.setStroke(Color.YELLOW);
+							line.setStroke(color);
 							this.hitGroup.getChildren().add(line);
 						}
 						old = pos;
@@ -90,7 +100,7 @@ public class ShipGroup extends Group {
 						Position first = enemy.getPattern().get(0);
 						Position last = enemy.getPattern().get(enemy.getPattern().size()-1);
 						Line line = new Line(first.getX(), first.getY(), last.getX(), last.getY());
-						line.setStroke(Color.YELLOW);
+						line.setStroke(color);
 						this.hitGroup.getChildren().add(line);
 					}
 				}

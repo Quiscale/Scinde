@@ -5,5 +5,5 @@ import java.util.List;
 import scinde.model.world.World;
 
 public interface IUpdatable {
-	public void update(List<World> worlds);
+	public boolean update(List<World> worlds);
 }

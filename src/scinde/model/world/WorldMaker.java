@@ -30,6 +30,11 @@ public class WorldMaker {
 				if (position != null) {
 					entity.setPosition(new Position(position.getFloat("x"), position.getFloat("y")));
 				}
+				boolean startReverse = false;
+				if(enemies.getJSONObject(i).has("startreverse"))
+				{
+					startReverse = enemies.getJSONObject(i).getBoolean("startreverse");
+				}
 				if(enemies.getJSONObject(i).has("pattern"))
 				{
 					JSONArray patterns = enemies.getJSONObject(i).getJSONArray("pattern");
@@ -37,7 +42,7 @@ public class WorldMaker {
 					for (int j = 0; j < patterns.length(); j++) {
 						enemyPattern.add(new Position(patterns.getJSONObject(j).getFloat("x"), patterns.getJSONObject(j).getFloat("y")));
 					}
-					entity.setPattern(enemyPattern);
+					entity.setPattern(enemyPattern, startReverse);
 				}
 				world.spawnEntity(entity);
 			}

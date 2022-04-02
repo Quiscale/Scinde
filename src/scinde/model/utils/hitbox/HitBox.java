@@ -1,18 +1,36 @@
 package scinde.model.utils.hitbox;
 
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.PathElement;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import scinde.model.utils.Position;
 
 public abstract class HitBox {
 	private Shape shape;
 	private boolean enabled;
+	private int id;
+	private static int currentId = 0;
+	private Text idText;
 	
 	public void init()
 	{
 		this.shape = createShape();
 		enabled = true;
+		this.id = currentId++;
+		idText = new Text(id+"");
+	}
+	
+	public int getId()
+	{
+		return id;
+	}
+	
+	public Text getIdDisplay()
+	{
+		return idText;
 	}
 	
 	public Shape getShape()
@@ -45,6 +63,8 @@ public abstract class HitBox {
 	
 	public void moveTo(Position pos)
 	{
+		idText.setTranslateX(pos.getX()-idText.getBoundsInLocal().getWidth()/2);
+		idText.setTranslateY(pos.getY()+idText.getBoundsInLocal().getHeight()/2);
 		shape.setTranslateX(pos.getX());
 		shape.setTranslateY(pos.getY());
 	}

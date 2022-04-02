@@ -5,6 +5,7 @@ import java.util.List;
 
 import scinde.controller.UpdateTimer;
 import scinde.model.entity.Entity;
+import scinde.model.entity.player.Player;
 import scinde.model.utils.Position;
 import scinde.model.utils.Velocity;
 import scinde.model.utils.hitbox.HitBox;
@@ -19,54 +20,62 @@ public abstract class Enemy extends Entity {
 	private int tracker;
 	private int waitingCounter;
 	private boolean followReverse;
+	private float damage;
+	private boolean forceNextStep;
 
-	protected Enemy(float velocityUnit, HitBox box) {
+	protected Enemy(float damage, float velocityUnit, HitBox box) {
 		super(box);
 		canMove = true;
 		pattern = new ArrayList<>();
 		this.velocityUnit = velocityUnit;
 		followPattern = false;
-		waitingCounter = 0;
+		waitingCounter = getWaitingForContinuePattern();
 		followReverse = false;
+		this.damage = damage;
 	}
 
 	@Override
-	public void update(List<World> worlds) {
+	public boolean update(List<World> worlds) {
 		super.update(worlds);
 		if (followPattern) {
 			Velocity newVelocity = Velocity.createVector(this.getPos(), pattern.get(tracker)).toUnit(velocityUnit);
-			double diff = this.getPos().diff(pattern.get(tracker));
-			if (diff <= (1 * velocityUnit)) {
-				if (waitingCounter < getWaitingForContinuePattern()) {
-					waitingCounter += UpdateTimer.ELAPSED_TIME;
-					newVelocity = new Velocity(0, 0);
-				} else {
-					waitingCounter = 0;
+
+			if (waitingCounter < getWaitingForContinuePattern()) {
+				waitingCounter += UpdateTimer.ELAPSED_TIME;
+				newVelocity = new Velocity(0, 0);
+			} else {
+				double diff = this.getPos().diff(pattern.get(tracker));
+				if (diff <= (1 * velocityUnit) || forceNextStep) {
+					if(!forceNextStep)
+						waitingCounter = 0;
+					else
+					{
+						forceNextStep = false;
+					}
 					tracker += followReverse ? -1 : 1;
 					if (!followReverse && tracker >= pattern.size())
 						tracker = 0;
-					else if(followReverse && tracker < 0)
-						tracker = pattern.size()-1;
-					newVelocity = Velocity.createVector(this.getPos(), pattern.get(tracker))
-							.toUnit(velocityUnit);
+					else if (followReverse && tracker < 0)
+						tracker = pattern.size() - 1;
+					newVelocity = Velocity.createVector(this.getPos(), pattern.get(tracker)).toUnit(velocityUnit);
 				}
 			}
 			this.setVelocity(newVelocity);
 		}
+		return true;
 	}
-	
+
 	@Override
-	public void onHitWall()
-	{
-		if(followPattern)
-		{
+	public void onHitWall() {
+		if (followPattern) {
+			waitingCounter = 0;
 			followReverse = !followReverse;
-			tracker += followReverse ? -1 : 1;
+			forceNextStep = true;
 		}
 	}
 
 	private int getWaitingForContinuePattern() {
-		return 1000;
+		return 500;
 	}
 
 	@Override
@@ -84,6 +93,28 @@ public abstract class Enemy extends Entity {
 			System.out.println("set pattern " + pattern);
 			this.pattern = pattern;
 			this.followPattern = true;
+			this.followReverse = false;
+		}
+	}
+
+	public void setPattern(List<Position> pattern, boolean startReverse) {
+		if (canMove) {
+			System.out.println("set pattern " + pattern);
+			this.pattern = pattern;
+			this.followPattern = true;
+			this.followReverse = startReverse;
+		}
+	}
+
+	@Override
+	public void onHit(World world, Entity other) {
+		if (other instanceof Player player) {
+			player.hit(damage);
+		} else {
+			if (followPattern) {
+				followReverse = !followReverse;
+				forceNextStep = true;
+			}
 		}
 	}
 }

@@ -52,8 +52,7 @@ public abstract class Entity implements IUpdatable{
 	
 	protected void move()
 	{
-		Position pos = new Position(this.pos.getX()+velocity.getX(), this.pos.getY()+velocity.getY());
-		
+		Position pos = new Position(this.pos.getX()+velocity.getX(), this.pos.getY()+velocity.getY());		
 		this.pos = pos;
 		this.hitbox.moveTo(pos);
 	}
@@ -71,19 +70,20 @@ public abstract class Entity implements IUpdatable{
 		return velocity;
 	}
 	
-	public void update(List<World> worlds)
+	public boolean update(List<World> worlds)
 	{
 		this.move();
 		for(World world : worlds)
 		{
-			if(!world.entityCanMove(this))
+			if(!world.detectCollision(this))
 			{
 				setVelocity(getVelocity().inverse());
 				move(); 
 				setVelocity(getVelocity().inverse());
-				return;
+				return false;
 			}
 		}
+		return true;
 	}
 	
 	public void onHitWall() {}

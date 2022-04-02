@@ -77,15 +77,15 @@ public class World {
 		}
 	}
 	
-	public boolean entityCanMove(Entity entity) {
+	public boolean detectCollision(Entity entity) {
 		for(Entity other : entities)
 		{
 			HitBox otherBox = other.getHitbox();
 			HitBox thisBox = entity.getHitbox();
 			if(other != entity && otherBox != null && otherBox.isEnabled() && thisBox != null && thisBox.isEnabled() && otherBox.overlap(thisBox))
 			{
-				other.onHit(this, entity);
-				if(entity.getLifePoints() <= 0)
+				entity.onHit(this, other);
+				if(other.getLifePoints() <= 0)
 				{
 					entity.onDeath(this);
 				}

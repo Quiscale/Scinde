@@ -74,4 +74,13 @@ public class Velocity {
 	{
 		return "["+x+", "+y+"]";
 	}
+
+	public Velocity mult(float f) {
+		return new Velocity(this.x * f, this.y * f);
+	}
+
+	public Velocity div(float f) {
+
+		return new Velocity(this.x / f, this.y / f);
+	}
 }
