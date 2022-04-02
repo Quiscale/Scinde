@@ -4,6 +4,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.Transition;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
+import scinde.controller.GameController;
 import scinde.controller.GameTransition;
 import scinde.view.node.ShipView;
 import scinde.view.node.SpaceBackground;
@@ -23,9 +24,7 @@ public class MainPane extends Pane {
 		
 		this.getChildren().add(new SpaceBackground());
 		
-		ShipView ship = new ShipView();
-		ship.setTranslateX(640);
-		ship.setTranslateY(400);
+		ShipGroup ship = new ShipGroup();
 		
 		MenuPane menu = new MenuPane();
 		menu.setOnMouseClicked((event) -> {
@@ -49,7 +48,9 @@ public class MainPane extends Pane {
 				
 			}.play();
 			
+			GameController.startGame();
 			GameTransition.startGame(ship);
+			ship.showHitboxes();
 			
 		});
 		

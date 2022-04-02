@@ -1,13 +1,16 @@
 package scinde.controller;
 
-import scinde.view.group.ShipGroup;
+import scinde.model.level.Level;
+import scinde.model.level.LevelMaker;
 
-public class GameTransition {
+public class GameController {
 
 	// ////////////////////////////////////////////////////////////////////////
 	// Attributes
 	// ////////////////////////////////////////////////////////////////////////
 
+	public static Level LEVEL;
+	
 	// ////////////////////////////////////////////////////////////////////////
 	// Constructors
 	// ////////////////////////////////////////////////////////////////////////
@@ -15,19 +18,21 @@ public class GameTransition {
 	// ////////////////////////////////////////////////////////////////////////
 	// Methods
 	// ////////////////////////////////////////////////////////////////////////
-	
-	public static void startGame(ShipGroup ship) {
+
+	public static void startGame() {
 		
-		// Zoomer sur le vaisseau
-		ship.zoomCockpit();
+		LevelMaker maker = new LevelMaker("level1");
 		
-		// Faire parler le joueur
+		try {
+			LEVEL = maker.make();
+			
+			new UpdateTimer();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		// Afficher travail flo
-		
-	}
-	
-	public void goToSuperluminal() {
 		
 	}
 	

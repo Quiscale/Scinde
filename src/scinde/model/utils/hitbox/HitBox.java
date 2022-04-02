@@ -1,4 +1,4 @@
-package scinde.utils.hitbox;
+package scinde.model.utils.hitbox;
 
 import javafx.scene.shape.Shape;
 import scinde.model.utils.Position;

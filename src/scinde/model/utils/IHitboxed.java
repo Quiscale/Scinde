@@ -1,6 +1,6 @@
 package scinde.model.utils;
 
-import scinde.utils.hitbox.HitBox;
+import scinde.model.utils.hitbox.HitBox;
 
 public interface IHitboxed {
 	public HitBox getHitbox();

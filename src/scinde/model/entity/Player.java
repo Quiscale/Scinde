@@ -1,7 +1,7 @@
 package scinde.model.entity;
 
+import scinde.model.utils.hitbox.CircleHitbox;
 import scinde.model.world.World;
-import scinde.utils.hitbox.CircleHitbox;
 
 public class Player extends Entity{
 	

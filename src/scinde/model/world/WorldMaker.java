@@ -11,10 +11,10 @@ import scinde.model.entity.Entity;
 import scinde.model.registry.Identifier;
 import scinde.model.registry.Registry;
 import scinde.model.utils.Position;
-import scinde.utils.hitbox.CircleHitbox;
-import scinde.utils.hitbox.CustomHitbox;
-import scinde.utils.hitbox.HitBox;
-import scinde.utils.hitbox.RectangularHitbox;
+import scinde.model.utils.hitbox.CircleHitbox;
+import scinde.model.utils.hitbox.CustomHitbox;
+import scinde.model.utils.hitbox.HitBox;
+import scinde.model.utils.hitbox.RectangularHitbox;
 
 public class WorldMaker {
 
