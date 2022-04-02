@@ -3,7 +3,8 @@ package scinde.model.level;
 import java.util.List;
 
 import scinde.model.entity.Entity;
-import scinde.model.entity.Player;
+import scinde.model.entity.EntityHolder;
+import scinde.model.entity.player.Player;
 import scinde.model.world.World;
 
 public class Level {
@@ -11,17 +12,17 @@ public class Level {
 	private String name;
 	private World left;
 	private World right;
-	private Player player;
-	private List<Entity> sharedEntities;
+	private EntityHolder player;
+	private List<EntityHolder> sharedEntities;
 	
-	protected Level(String name, Player player, List<Entity> shared, World left, World right)
+	protected Level(String name, EntityHolder player, List<EntityHolder> shared, World left, World right)
 	{
 		this.left = left;
 		this.right=right;
 		this.player=player;
 		this.name=name;
 		this.sharedEntities = shared;
-		this.sharedEntities.add(player);
+		this.sharedEntities.add(this.player);
 	}
 	
 	public void triggerInterraction()
@@ -30,7 +31,7 @@ public class Level {
 		right.triggerActivables(player);
 	}
 	
-	public Player getPlayer()
+	public EntityHolder getPlayer()
 	{
 		return player;
 	}
@@ -42,15 +43,15 @@ public class Level {
 	
 	public void update()
 	{
-		for(Entity entity : left.getEntities())
+		for(EntityHolder entity : left.getEntities())
 		{
 			entity.update(List.of(left));
 		}
-		for(Entity entity : right.getEntities())
+		for(EntityHolder entity : right.getEntities())
 		{
 			entity.update(List.of(right));
 		}
-		for(Entity entity : sharedEntities)
+		for(EntityHolder entity : sharedEntities)
 		{
 			entity.update(List.of(left, right));
 		}

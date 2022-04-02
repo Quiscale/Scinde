@@ -12,10 +12,10 @@ public class CustomHitbox extends HitBox{
 	{
 		if(!composites.isEmpty())
 		{
-			Shape shape = composites.remove(0).getShape();
-			while(!composites.isEmpty())
+			Shape shape = composites.get(0).getShape();
+			for(int i = 1; i<composites.size(); i++)
 			{
-				Shape next = composites.remove(0).getShape();
+				Shape next = composites.get(i).getShape();
 				shape = Shape.union(shape, next);
 			}
 			finalShape = shape;

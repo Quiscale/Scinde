@@ -80,7 +80,6 @@ public class SpaceBackground extends Group {
 	}
 	
 	public static void goToSupraluminic() {
-		System.out.println("SUPRA");
 		Transition transition = new Transition() {
 
 			double originalHeight;
@@ -104,7 +103,6 @@ public class SpaceBackground extends Group {
 	}
 	
 	public static void goToNormal() {
-		System.out.println("NORMAL");
 		Transition transition = new Transition() {
 
 			double originalHeight;

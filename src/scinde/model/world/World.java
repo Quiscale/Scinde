@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import scinde.model.entity.Entity;
+import scinde.model.entity.EntityHolder;
 import scinde.model.triggerable.Triggerable;
 import scinde.model.utils.Position;
 import scinde.model.utils.Velocity;
@@ -11,7 +12,7 @@ import scinde.model.utils.hitbox.HitBox;
 
 public class World {
 	
-	private List<Entity> entities;
+	private List<EntityHolder> entities;
 	private List<HitBox> blocks;
 	private List<Triggerable> triggerables; 
 	
@@ -27,7 +28,7 @@ public class World {
 		return blocks;
 	}
 	
-	public List<Entity> getEntities()
+	public List<EntityHolder> getEntities()
 	{
 		return entities;
 	}
@@ -37,7 +38,7 @@ public class World {
 		return triggerables;
 	}
 	
-	public void spawnEntity(Entity e)
+	public void spawnEntity(EntityHolder e)
 	{
 		this.entities.add(e);
 	}
@@ -55,7 +56,7 @@ public class World {
 	public List<HitBox> getHitboxes()
 	{
 		List<HitBox> boxes = new ArrayList<>();
-		for(Entity other : entities)
+		for(EntityHolder other : entities)
 		{
 			boxes.add(other.getHitbox());
 		}
@@ -66,38 +67,38 @@ public class World {
 		return boxes;
 	}
 	
-	public void triggerActivables(Entity fromPrespective)
+	public void triggerActivables(EntityHolder fromPrespective)
 	{
 		for(Triggerable trigger : triggerables)
 		{
-			if(trigger.getTrigger().overlap(fromPrespective.getHitbox()))
+			if(trigger.getTrigger().isEnabled() && trigger.getTrigger().overlap(fromPrespective.getHitbox()))
 			{
 				trigger.onTrigger(this);
 			}
 		}
 	}
 	
-	public boolean entityCanMove(Entity entity) {
-		for(Entity other : entities)
+	public boolean detectCollision(EntityHolder entity) {
+		for(EntityHolder other : entities)
 		{
-			if(other != entity && other.getHitbox().contains(entity.getHitbox()))
+			HitBox otherBox = other.getHitbox();
+			HitBox thisBox = entity.getHitbox();
+			if(other != entity && otherBox != null && otherBox.isEnabled() && thisBox != null && thisBox.isEnabled() && otherBox.overlap(thisBox))
 			{
-				other.onHit(this, entity);
-				if(entity.getLifePoints() <= 0)
-				{
-					entity.onDeath(this);
-				}
-				return false;
+				entity.hit(this, other);
+				return true;
 			}
 		}
 		for(HitBox other : blocks)
 		{
-			if(other.contains(entity.getHitbox()))
+			HitBox thisBox = entity.getHitbox();
+			if(other != null && other.isEnabled() && thisBox != null && thisBox.isEnabled() && other.overlap(thisBox))
 			{
-				return false;
+				entity.getEntity().onHitWall();
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 	
 }
