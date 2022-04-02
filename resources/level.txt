@@ -1,0 +1,25 @@
+
+blaster
+extincteur
+pied de biche
+grapin
+
+
+Moula : Aucun effet, empèche juste de faire des trucs
+Moula Gars : Moule qui marche (avec des petits pieds)
+Moula Variée : Quand attaqué, explose et s'éparpille
+Moula Gato : (dans la cuisine) Entrave
+
+
+Le joueur commence dans le cockpit
+Il doit d'abord aller chercher son arme dans la salle d'arme.
+
+
+
+
+
+La cuisine prend feu à un moment au pif, il faut l'eteindre avec un extincteur, le joueur rencontre des Moula Gato
+
+
+
+Il faut tuer la Moule Intergalactique qui s'est attaqué au moteur supraluminique, pour modifier les paramètres du moteur et fusionner le vaisseau.
