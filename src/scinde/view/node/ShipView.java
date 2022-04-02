@@ -2,8 +2,6 @@ package scinde.view.node;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.transform.Scale;
-import javafx.scene.transform.Translate;
 import scinde.Main;
 
 public class ShipView extends ImageView {
@@ -11,9 +9,6 @@ public class ShipView extends ImageView {
 	// ////////////////////////////////////////////////////////////////////////
 	// Attributes
 	// ////////////////////////////////////////////////////////////////////////
-
-	Translate translate;
-	Scale scale;
 	
 	// ////////////////////////////////////////////////////////////////////////
 	// Constructors

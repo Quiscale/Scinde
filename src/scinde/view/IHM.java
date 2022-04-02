@@ -1,8 +1,10 @@
 package scinde.view;
 
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
-import scinde.view.scene.GameScene;
+import scinde.Main;
+import scinde.view.group.MainPane;
 
 public class IHM extends Application {
 
@@ -10,6 +12,8 @@ public class IHM extends Application {
 	// Attributes
 	// ////////////////////////////////////////////////////////////////////////
 
+	public static MainPane PANE;
+	
 	// ////////////////////////////////////////////////////////////////////////
 	// Constructors
 	// ////////////////////////////////////////////////////////////////////////
@@ -21,9 +25,12 @@ public class IHM extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		
-		stage.setScene(GameScene.create());
+		IHM.PANE = new MainPane();
+		
+		stage.setScene(new Scene(IHM.PANE, 1280, 720));
 		stage.show();
 		
+		Main.GAME.start();
 	}
 
 	// ////////////////////////////////////////////////////////////////////////

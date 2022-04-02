@@ -1,13 +1,8 @@
 package scinde.view.group;
 
-import javafx.animation.Interpolator;
-import javafx.animation.Transition;
 import javafx.scene.layout.Pane;
-import javafx.util.Duration;
-import scinde.controller.GameController;
-import scinde.controller.GameTransition;
-import scinde.controller.SoundController;
-import scinde.view.node.ShipView;
+import javafx.scene.transform.Translate;
+import scinde.view.node.DialogField;
 import scinde.view.node.SpaceBackground;
 
 public class MainPane extends Pane {
@@ -16,6 +11,9 @@ public class MainPane extends Pane {
 	// Attributes
 	// ////////////////////////////////////////////////////////////////////////
 	
+	public ShipGroup SHIP;
+	public DialogField DIALOG;
+	
 	// ////////////////////////////////////////////////////////////////////////
 	// Constructors
 	// ////////////////////////////////////////////////////////////////////////
@@ -23,41 +21,12 @@ public class MainPane extends Pane {
 	public MainPane() {
 		super();
 		
-		this.getChildren().add(new SpaceBackground());
+		this.SHIP= new ShipGroup();
 		
-		ShipGroup ship = new ShipGroup();
-		
-		MenuPane menu = new MenuPane();
-		menu.setOnMouseClicked((event) -> {
-			
-			new Transition() {
+		this.DIALOG = new DialogField();
+		this.DIALOG.getTransforms().add(new Translate(680, 620));
 
-				{
-					this.setCycleDuration(Duration.seconds(2));
-					this.setInterpolator(Interpolator.LINEAR);
-					this.setOnFinished((action) -> {
-						getChildren().remove(menu);
-					});
-				}
-				
-				@Override
-				protected void interpolate(double frac) {
-					
-					menu.setOpacity(1 -frac);
-					
-				}
-				
-			}.play();
-			
-			GameController.startGame();
-			GameTransition.startGame(ship);
-			ship.showHitboxes();
-			
-		});
-		
-		this.getChildren().addAll(ship, menu);
-		SoundController.playMenu();
-
+		this.getChildren().addAll(new SpaceBackground(), this.SHIP, new MenuPane(), this.DIALOG);
 	}
 	
 	// ////////////////////////////////////////////////////////////////////////
