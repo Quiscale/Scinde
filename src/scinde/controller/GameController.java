@@ -100,6 +100,17 @@ public class GameController {
 	
 	public void start() {
 
+		LevelMaker maker = new LevelMaker("level1");
+		try {
+			LEVEL = maker.make();
+			
+			new UpdateTimer();
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		this.action_i = 0;
 		this.actions[this.action_i].handle();
 	}
