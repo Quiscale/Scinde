@@ -2,6 +2,7 @@ package scinde.model.entity;
 
 import java.util.List;
 
+import scinde.model.utils.Position;
 import scinde.model.utils.hitbox.HitBox;
 import scinde.model.world.World;
 
@@ -29,9 +30,9 @@ public abstract class Entity{
 	
 	public abstract float getDamage();
 	
-	public abstract void onHit(World world, Entity other);
+	public abstract void onHit(World world, Position pos, Entity other);
 	
-	public abstract void onDeath(World world);
+	public abstract void onDeath(World world, Position pos);
 	
 	public abstract void onUpdate(List<World> worlds);
 
