@@ -21,6 +21,12 @@ public class CharacterView extends ImageView {
 		Image img = Main.LOADER.get("character").asImage();
 		this.setImage(img);
 		
+		this.setPreserveRatio(true);
+		this.setFitWidth(90);
+		
+		this.setTranslateX(888-45);
+		this.setTranslateY(416-45);
+		
 		/*EntityHolder player = Main.GAME.LEVEL.getPlayer();
 
 		this.xProperty().bind(player.getPos().xProperty());

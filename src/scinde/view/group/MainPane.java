@@ -24,7 +24,7 @@ public class MainPane extends Pane {
 		this.SHIP= new ShipGroup();
 		
 		this.DIALOG = new DialogField();
-		this.DIALOG.getTransforms().add(new Translate(680, 620));
+		this.DIALOG.getTransforms().add(new Translate(640, 620));
 
 		this.getChildren().addAll(new SpaceBackground(), this.SHIP, new MenuPane(), this.DIALOG);
 	}

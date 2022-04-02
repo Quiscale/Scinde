@@ -43,9 +43,9 @@ public class ShipGroup extends Group {
 	public ShipGroup() {
 
 		this.scale = new Scale(0.5, 0.5);
-		this.scale.setPivotX(680-1820/4);
-		this.scale.setPivotY(300);
-		this.translate = new Translate(680-1820/4, 580);
+		this.scale.setPivotX(640);
+		this.scale.setPivotY(820);
+		this.translate = new Translate(640-1820/2, 40); //680-1820/16, 580
 		this.getTransforms().addAll(scale, translate);
 
 		// Ship background
