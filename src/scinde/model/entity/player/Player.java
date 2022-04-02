@@ -21,7 +21,7 @@ public class Player extends Entity{
 
 	@Override
 	public void onHit(World world, Position pos, Entity other) {
-		System.out.println("ouch");
+		System.out.println("ouch!");
 	}
 
 	@Override

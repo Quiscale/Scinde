@@ -20,7 +20,6 @@ public class GameController {
 	// ////////////////////////////////////////////////////////////////////////
 
 	public GameController() {
-		
 		this.action_i = 0;
 		this.actions = new GameAction[] {
 				
@@ -36,6 +35,7 @@ public class GameController {
 					.setOnEnd(() -> {
 						this.nextAction();
 					});
+				IHM.PANE.SHIP.showHitboxes();
 			},
 			
 			// Make the character speak
