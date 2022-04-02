@@ -53,6 +53,7 @@ public abstract class Entity implements IUpdatable{
 	protected void move()
 	{
 		Position pos = new Position(this.pos.getX()+velocity.getX(), this.pos.getY()+velocity.getY());
+		
 		this.pos = pos;
 		this.hitbox.moveTo(pos);
 	}
@@ -84,6 +85,8 @@ public abstract class Entity implements IUpdatable{
 			}
 		}
 	}
+	
+	public void onHitWall() {}
 	
 	public abstract void onHit(World world, Entity other);
 	

@@ -1,32 +1,33 @@
 package scinde.model.utils.hitbox;
 
+import javafx.scene.shape.Path;
+import javafx.scene.shape.PathElement;
 import javafx.scene.shape.Shape;
 import scinde.model.utils.Position;
 
 public abstract class HitBox {
 	private Shape shape;
-	private float offetX;
-	private float offsetY;
+	private boolean enabled;
 	
 	public void init()
 	{
 		this.shape = createShape();
-	}
-	
-	public HitBox setOffsetX(float x)
-	{
-		this.offetX = x;
-		return this;
-	}
-	public HitBox setOffsetY(float y)
-	{
-		this.offsetY = y;
-		return this;
+		enabled = true;
 	}
 	
 	public Shape getShape()
 	{
 		return this.shape;
+	}
+	
+	public void setEnabled(boolean value)
+	{
+		this.enabled = value;
+	}
+	
+	public boolean isEnabled()
+	{
+		return enabled;
 	}
 	
 	public void rotate(float angle)
@@ -39,19 +40,13 @@ public abstract class HitBox {
 	public boolean overlap(HitBox box)
 	{
 		Shape other = box.getShape();
-		return shape.intersects(other.getBoundsInLocal());
+		return !((Path)Shape.intersect(this.shape, other)).getElements().isEmpty();
 	}
 	
 	public void moveTo(Position pos)
 	{
-		shape.setTranslateX(pos.getX()+offetX);
-		shape.setTranslateY(pos.getY()+offsetY);
-	}
-	
-	public boolean contains(HitBox box)
-	{
-		Shape other = box.getShape();
-		return shape.getBoundsInLocal().contains(other.getBoundsInLocal());
+		shape.setTranslateX(pos.getX());
+		shape.setTranslateY(pos.getY());
 	}
 	
 	public String toString()

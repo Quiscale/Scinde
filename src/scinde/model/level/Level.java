@@ -3,7 +3,7 @@ package scinde.model.level;
 import java.util.List;
 
 import scinde.model.entity.Entity;
-import scinde.model.entity.Player;
+import scinde.model.entity.player.Player;
 import scinde.model.world.World;
 
 public class Level {

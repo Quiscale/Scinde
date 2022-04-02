@@ -3,6 +3,8 @@ package scinde.controller;
 import javafx.animation.AnimationTimer;
 
 public class UpdateTimer extends AnimationTimer {
+	
+	public static int ELAPSED_TIME = 10;
 
 	// ////////////////////////////////////////////////////////////////////////
 	// Attributes
@@ -34,7 +36,7 @@ public class UpdateTimer extends AnimationTimer {
 	@Override
 	public void handle(long now) {
 		
-		if(now > this.lastNow +100000000) { // 100ms
+		if(now > this.lastNow +ELAPSED_TIME*1000000) { // 100ms
 			this.lastNow = now;
 
 			GameController.LEVEL.update();

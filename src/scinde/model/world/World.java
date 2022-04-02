@@ -80,7 +80,9 @@ public class World {
 	public boolean entityCanMove(Entity entity) {
 		for(Entity other : entities)
 		{
-			if(other != entity && other.getHitbox().contains(entity.getHitbox()))
+			HitBox otherBox = other.getHitbox();
+			HitBox thisBox = entity.getHitbox();
+			if(other != entity && otherBox != null && otherBox.isEnabled() && thisBox != null && thisBox.isEnabled() && otherBox.overlap(thisBox))
 			{
 				other.onHit(this, entity);
 				if(entity.getLifePoints() <= 0)
@@ -92,8 +94,10 @@ public class World {
 		}
 		for(HitBox other : blocks)
 		{
-			if(other.contains(entity.getHitbox()))
+			HitBox thisBox = entity.getHitbox();
+			if(other != null && other.isEnabled() && thisBox != null && thisBox.isEnabled() && other.overlap(thisBox))
 			{
+				entity.onHitWall();
 				return false;
 			}
 		}

@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import scinde.model.entity.Entity;
+import scinde.model.entity.enemies.Enemy;
 import scinde.model.registry.Identifier;
 import scinde.model.registry.Registry;
 import scinde.model.utils.Position;
@@ -25,9 +26,18 @@ public class WorldMaker {
 			for (int i = 0; i < enemies.length(); i++) {
 				JSONObject position = enemies.getJSONObject(i).getJSONObject("position");
 				String id = enemies.getJSONObject(i).getString("id");
-				Entity entity = Registry.ENTITY.get(new Identifier(id)).provide();
+				Enemy entity = Registry.ENEMY.get(new Identifier(id)).build();
 				if (position != null) {
 					entity.setPosition(new Position(position.getFloat("x"), position.getFloat("y")));
+				}
+				if(enemies.getJSONObject(i).has("pattern"))
+				{
+					JSONArray patterns = enemies.getJSONObject(i).getJSONArray("pattern");
+					List<Position> enemyPattern = new ArrayList<>();
+					for (int j = 0; j < patterns.length(); j++) {
+						enemyPattern.add(new Position(patterns.getJSONObject(j).getFloat("x"), patterns.getJSONObject(j).getFloat("y")));
+					}
+					entity.setPattern(enemyPattern);
 				}
 				world.spawnEntity(entity);
 			}
@@ -60,33 +70,31 @@ public class WorldMaker {
 						hitbox.rotate(hitboxes.getJSONObject(j).getFloat("angle"));
 					}
 					hitbox.moveTo(new Position(position.getFloat("x"), position.getFloat("y")));
-					System.out.println(hitbox);
-					List<HitBox> merged = new ArrayList<>();
-					merged.add(hitbox);
+					List<HitBox> customs = new ArrayList<>();
+					customs.add(hitbox);
 					for(HitBox box : hitboxGroup)
 					{
-						if(hitbox.overlap(box))
+						if(box.overlap(hitbox))
 						{
-							merged.add(box);
+							customs.add(box);
 						}
 					}
-					for(HitBox box : merged)
-					{
-						if(hitboxGroup.contains(box))
-							hitboxGroup.remove(box);
-					}
-					if(merged.size() == 1)
-					{
-						HitBox box = merged.get(0);
-						hitboxGroup.add(box);
-					}
+					if(customs.size() == 1)
+						hitboxGroup.add(hitbox);
 					else
 					{
-						HitBox box = new CustomHitbox(merged);
-						box.init();
-						hitboxGroup.add(box);
+						CustomHitbox custom = new CustomHitbox(customs);
+						custom.init();
+						hitboxGroup.add(custom);
+						for(HitBox box : customs)
+						{
+							if(hitboxGroup.contains(box))
+							{
+								hitboxGroup.remove(box);
+							}
+						}
 					}
-				}				
+				}
 			}
 			System.out.println(hitboxGroup.size());
 			for(HitBox box : hitboxGroup)

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import org.json.JSONObject;
 
 import scinde.model.entity.Entity;
-import scinde.model.entity.Player;
+import scinde.model.entity.player.Player;
 import scinde.model.registry.Identifier;
 import scinde.model.registry.Registry;
 import scinde.model.utils.Position;
@@ -24,7 +24,7 @@ public class LevelMaker {
 	public LevelMaker(String levelName)
 	{
 		this.levelName = levelName;
-		levelStream = WorldMaker.class.getResourceAsStream("/levels/" + levelName + ".json");
+		levelStream = WorldMaker.class.getResourceAsStream("/assets/scinde/levels/" + levelName + ".json");
 	}
 	
 	public Level make() throws Exception

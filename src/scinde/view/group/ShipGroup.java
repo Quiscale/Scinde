@@ -4,10 +4,15 @@ import javafx.animation.Interpolator;
 import javafx.animation.Transition;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 import scinde.controller.GameController;
+import scinde.model.entity.Entity;
+import scinde.model.entity.enemies.Enemy;
+import scinde.model.utils.Position;
 import scinde.model.utils.hitbox.HitBox;
 import scinde.view.node.ShipView;
 
@@ -54,12 +59,43 @@ public class ShipGroup extends Group {
 		System.out.println("HEY");
 		
 		for(HitBox box : GameController.LEVEL.getLeft().getHitboxes()) {
-			box.getShape().setFill(Color.RED);
+			box.getShape().setStroke(Color.GREEN);
+			box.getShape().setFill(null);
 			this.hitGroup.getChildren().add(box.getShape());
-			System.out.println(box.getShape());
-			
 		}
-		
+		for(Entity entity : GameController.LEVEL.getLeft().getEntities())
+		{
+			if(entity instanceof Enemy enemy)
+			{
+				if(!enemy.getPattern().isEmpty())
+				{
+					Position old = null;
+					for(Position pos : enemy.getPattern())
+					{
+						Circle dot = new Circle(2);
+						dot.setFill(Color.YELLOW);
+						dot.setTranslateX(pos.getX());
+						dot.setTranslateY(pos.getY());
+						this.hitGroup.getChildren().add(dot);
+						if(old != null)
+						{
+							Line line = new Line(pos.getX(), pos.getY(), old.getX(), old.getY());
+							line.setStroke(Color.YELLOW);
+							this.hitGroup.getChildren().add(line);
+						}
+						old = pos;
+					}
+					if(enemy.getPattern().size()>2)
+					{
+						Position first = enemy.getPattern().get(0);
+						Position last = enemy.getPattern().get(enemy.getPattern().size()-1);
+						Line line = new Line(first.getX(), first.getY(), last.getX(), last.getY());
+						line.setStroke(Color.YELLOW);
+						this.hitGroup.getChildren().add(line);
+					}
+				}
+			}
+		}
 	}
 
 	public void zoomCockpit() {
