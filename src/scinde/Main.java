@@ -1,6 +1,7 @@
 package scinde;
 
 import javafx.application.Application;
+import scinde.controller.GameController;
 import scinde.model.level.Level;
 import scinde.model.level.LevelMaker;
 import scinde.view.IHM;
@@ -13,6 +14,7 @@ public class Main {
 	// ////////////////////////////////////////////////////////////////////////
 
 	public static final Loader LOADER = new Loader("assets/scinde/");
+	public static final GameController GAME = new GameController();
 	
 	// ////////////////////////////////////////////////////////////////////////
 	// Constructors

@@ -8,8 +8,6 @@ public class SoundController {
 	// ////////////////////////////////////////////////////////////////////////
 	// Attributes
 	// ////////////////////////////////////////////////////////////////////////
-
-	public static MediaPlayer player;
 	
 	// ////////////////////////////////////////////////////////////////////////
 	// Constructors
@@ -20,12 +18,12 @@ public class SoundController {
 	// ////////////////////////////////////////////////////////////////////////
 
 	public static void init() {
-		player = null;
+
 	}
 	
 	public static void playMenu() {
 		
-		player = new MediaPlayer(Main.LOADER.get("Title_Screen_v2").asMedia());
+		MediaPlayer player = new MediaPlayer(Main.LOADER.get("Title_Screen_v2").asMedia());
 		player.setCycleCount(MediaPlayer.INDEFINITE);
 		player.play();
 	}

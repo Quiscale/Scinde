@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
+import scinde.controller.ActionEnd;
 import scinde.controller.GameController;
 import scinde.model.entity.Entity;
 import scinde.model.entity.EntityHolder;
@@ -22,6 +23,7 @@ import scinde.model.entity.enemies.OpenPatternFollower;
 import scinde.model.entity.enemies.PatternFollower;
 import scinde.model.utils.Position;
 import scinde.model.utils.hitbox.HitBox;
+import scinde.view.node.CharacterView;
 import scinde.view.node.ShipView;
 
 public class ShipGroup extends Group {
@@ -40,20 +42,26 @@ public class ShipGroup extends Group {
 
 	public ShipGroup() {
 
-		this.scale = new Scale(1, 1);
-		this.scale.setPivotX(479 +240/2);
-		this.scale.setPivotY(400);
-		this.translate = new Translate(-240, 0);
+		this.scale = new Scale(0.5, 0.5);
+		this.scale.setPivotX(680-1820/4);
+		this.scale.setPivotY(300);
+		this.translate = new Translate(680-1820/4, 580);
 		this.getTransforms().addAll(scale, translate);
 
+		// Ship background
 		ShipView ship = new ShipView();
-		ship.setTranslateX(640);
-		ship.setTranslateY(360);
+		//ship.setTranslateX(640);
+		//ship.setTranslateY(360);
 		this.getChildren().add(ship);
 		
+		// Player
+		CharacterView character = new CharacterView();
+		this.getChildren().add(character);
+		
+		// Hitbox debug
 		this.hitGroup = new Group();
-		this.hitGroup.setTranslateX(640);
-		this.hitGroup.setTranslateY(360);
+		//this.hitGroup.setTranslateX(640);
+		//this.hitGroup.setTranslateY(360);
 		this.getChildren().add(this.hitGroup);
 		
 	}
@@ -117,24 +125,28 @@ public class ShipGroup extends Group {
 		}
 	}
 
-	public void zoomCockpit() {
+	public ActionEnd zoomCockpit() {
+		
+		ActionEnd action = new ActionEnd();
 		
 		new Transition() {
 
 			{
 				this.setCycleDuration(Duration.seconds(5));
 				this.setInterpolator(Interpolator.LINEAR);
+				this.setOnFinished((e) -> action.trigger());
 			}
 			
 			@Override
 			protected void interpolate(double frac) {
 				
-				scale.setX(1 +frac);
-				scale.setY(1 +frac);
+				scale.setX(0.5 +frac/2);
+				scale.setY(0.5 +frac/2);
 			}
 			
 		}.play();
 		
+		return action;
 	}
 	
 	// ////////////////////////////////////////////////////////////////////////

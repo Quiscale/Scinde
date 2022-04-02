@@ -1,10 +1,10 @@
-package scinde.view.scene;
+package scinde.view.node;
 
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import scinde.view.group.MainPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import scinde.Main;
 
-public class GameScene extends Scene {
+public class CharacterView extends ImageView {
 
 	// ////////////////////////////////////////////////////////////////////////
 	// Attributes
@@ -14,21 +14,17 @@ public class GameScene extends Scene {
 	// Constructors
 	// ////////////////////////////////////////////////////////////////////////
 
-	private GameScene(Parent parent) {
-		super(parent, 1280, 720);
+	public CharacterView() {
+		super();
+		
+		Image img = Main.LOADER.get("character").asImage();
+		this.setImage(img);
 	}
 	
 	// ////////////////////////////////////////////////////////////////////////
 	// Methods
 	// ////////////////////////////////////////////////////////////////////////
 
-	public static GameScene create() {
-		
-		MainPane pane = new MainPane();
-		
-		return new GameScene(pane);
-	}
-	
 	// ////////////////////////////////////////////////////////////////////////
 	// Overrides
 	// ////////////////////////////////////////////////////////////////////////

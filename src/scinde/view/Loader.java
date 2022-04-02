@@ -42,6 +42,7 @@ public class Loader {
 				"fond-espace",
 				"fond-supraluminique",
 				"vaisseau",
+				"character",
 				"bouton-menu"
 		};
 		String[] pathsSound = new String[] {
