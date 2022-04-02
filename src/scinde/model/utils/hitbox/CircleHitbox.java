@@ -1,4 +1,4 @@
-package scinde.utils.hitbox;
+package scinde.model.utils.hitbox;
 
 import java.util.List;
 

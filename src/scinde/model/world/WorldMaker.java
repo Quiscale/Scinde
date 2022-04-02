@@ -11,10 +11,10 @@ import scinde.model.entity.Entity;
 import scinde.model.registry.Identifier;
 import scinde.model.registry.Registry;
 import scinde.model.utils.Position;
-import scinde.utils.hitbox.CircleHitbox;
-import scinde.utils.hitbox.CustomHitbox;
-import scinde.utils.hitbox.HitBox;
-import scinde.utils.hitbox.RectangularHitbox;
+import scinde.model.utils.hitbox.CircleHitbox;
+import scinde.model.utils.hitbox.CustomHitbox;
+import scinde.model.utils.hitbox.HitBox;
+import scinde.model.utils.hitbox.RectangularHitbox;
 
 public class WorldMaker {
 
@@ -32,39 +32,66 @@ public class WorldMaker {
 				world.spawnEntity(entity);
 			}
 		}
-		if (object.has("hitboxgroups")) {
-			JSONArray groups = object.getJSONArray("hitboxgroups");
-			for (int i = 0; i < groups.length(); i++) {
-				JSONArray hitboxes = groups.getJSONObject(i).getJSONArray("hitboxes");
-				List<HitBox> hitboxGroup = new ArrayList<>();
-				JSONObject position = groups.getJSONObject(i).getJSONObject("position");
-				for (int j = 0; j < hitboxes.length(); j++) {
-					String type = hitboxes.getJSONObject(j).getString("type");
-					HitBox hitbox = null;
-					switch (type) {
-					case "circle":
-						hitbox = new CircleHitbox(hitboxes.getJSONObject(j).getFloat("radius"));
-						break;
-					case "rectangle":
-						float width = hitboxes.getJSONObject(j).getFloat("width");
-						float height = hitboxes.getJSONObject(j).getFloat("height");
-						hitbox = new RectangularHitbox(width, height);
-						break;
-					default:
-						System.out.println("WARN : unkown hitbox type " + type);
-						break;
-					}
-					if(hitbox != null)
-					{
-						hitbox.init();
-						hitboxGroup.add(hitbox);
-					}
-					
+		if (object.has("hitboxes")) {
+			JSONArray hitboxes = object.getJSONArray("hitboxes");
+			List<HitBox> hitboxGroup = new ArrayList<>();
+			for (int j = 0; j < hitboxes.length(); j++) {
+				String type = hitboxes.getJSONObject(j).getString("type");
+				JSONObject position = hitboxes.getJSONObject(j).getJSONObject("position");
+				HitBox hitbox = null;
+				switch (type) {
+				case "circle":
+					hitbox = new CircleHitbox(hitboxes.getJSONObject(j).getFloat("radius"));
+					break;
+				case "rectangle":
+					float width = hitboxes.getJSONObject(j).getFloat("width");
+					float height = hitboxes.getJSONObject(j).getFloat("height");
+					hitbox = new RectangularHitbox(width, height);
+					break;
+				default:
+					System.out.println("WARN : unkown hitbox type " + type);
+					break;
 				}
-				HitBox complex = new CustomHitbox(hitboxGroup);
-				complex.init();
-				complex.moveTo(new Position(position.getFloat("x"), position.getFloat("y")));
-				world.addHitbox(complex);
+				if(hitbox != null)
+				{
+					hitbox.init();
+					if(hitboxes.getJSONObject(j).has("angle"))
+					{
+						hitbox.rotate(hitboxes.getJSONObject(j).getFloat("angle"));
+					}
+					hitbox.moveTo(new Position(position.getFloat("x"), position.getFloat("y")));
+					System.out.println(hitbox);
+					List<HitBox> merged = new ArrayList<>();
+					merged.add(hitbox);
+					for(HitBox box : hitboxGroup)
+					{
+						if(hitbox.overlap(box))
+						{
+							merged.add(box);
+						}
+					}
+					for(HitBox box : merged)
+					{
+						if(hitboxGroup.contains(box))
+							hitboxGroup.remove(box);
+					}
+					if(merged.size() == 1)
+					{
+						HitBox box = merged.get(0);
+						hitboxGroup.add(box);
+					}
+					else
+					{
+						HitBox box = new CustomHitbox(merged);
+						box.init();
+						hitboxGroup.add(box);
+					}
+				}				
+			}
+			System.out.println(hitboxGroup.size());
+			for(HitBox box : hitboxGroup)
+			{
+				world.addHitbox(box);
 			}
 		}
 		if (object.has("triggerables")) {

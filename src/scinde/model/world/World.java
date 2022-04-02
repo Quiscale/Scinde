@@ -7,7 +7,7 @@ import scinde.model.entity.Entity;
 import scinde.model.triggerable.Triggerable;
 import scinde.model.utils.Position;
 import scinde.model.utils.Velocity;
-import scinde.utils.hitbox.HitBox;
+import scinde.model.utils.hitbox.HitBox;
 
 public class World {
 	

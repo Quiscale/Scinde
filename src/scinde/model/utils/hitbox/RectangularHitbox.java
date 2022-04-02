@@ -1,4 +1,4 @@
-package scinde.utils.hitbox;
+package scinde.model.utils.hitbox;
 
 import org.w3c.dom.css.Rect;
 

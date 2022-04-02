@@ -1,7 +1,7 @@
 package scinde.model.triggerable;
 
+import scinde.model.utils.hitbox.HitBox;
 import scinde.model.world.World;
-import scinde.utils.hitbox.HitBox;
 
 public abstract class Triggerable {
 	private HitBox trigger;

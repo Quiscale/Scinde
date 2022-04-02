@@ -1,4 +1,4 @@
-package scinde.utils.hitbox;
+package scinde.model.utils.hitbox;
 
 import javafx.scene.shape.Shape;
 import scinde.model.utils.Position;
@@ -29,6 +29,11 @@ public abstract class HitBox {
 		return this.shape;
 	}
 	
+	public void rotate(float angle)
+	{
+		this.shape.setRotate(angle);
+	}
+	
 	protected abstract Shape createShape();
 	
 	public boolean overlap(HitBox box)
@@ -47,5 +52,10 @@ public abstract class HitBox {
 	{
 		Shape other = box.getShape();
 		return shape.getBoundsInLocal().contains(other.getBoundsInLocal());
+	}
+	
+	public String toString()
+	{
+		return "[("+this.shape.getTranslateX()+":"+this.shape.getTranslateY()+"), "+this.shape.getRotate()+"] / "+this.shape;
 	}
 }

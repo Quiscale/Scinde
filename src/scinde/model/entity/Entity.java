@@ -6,8 +6,8 @@ import scinde.model.level.Level;
 import scinde.model.utils.IUpdatable;
 import scinde.model.utils.Position;
 import scinde.model.utils.Velocity;
+import scinde.model.utils.hitbox.HitBox;
 import scinde.model.world.World;
-import scinde.utils.hitbox.HitBox;
 
 public abstract class Entity implements IUpdatable{
 	private HitBox hitbox;
