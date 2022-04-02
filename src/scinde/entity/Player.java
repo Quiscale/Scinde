@@ -13,7 +13,12 @@ public class Player extends Entity{
 	}
 
 	@Override
-	public void onHit(Entity other) {
+	public void onHit(World world, Entity other) {
 		//do nothing
+	}
+
+	@Override
+	public void onDeath(World world) {
+		//what do we do ?
 	}
 }

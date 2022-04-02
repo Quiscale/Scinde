@@ -3,6 +3,7 @@ package scinde.level;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import org.json.JSONObject;
 
@@ -53,7 +54,7 @@ public class LevelMaker {
 		}
 		if(entity instanceof Player player)
 		{
-			return new Level(levelName, player, left, right);
+			return new Level(levelName, player, new ArrayList<>(), left, right);
 		}
 		else
 		{

@@ -8,7 +8,7 @@ public abstract class HitBox {
 	private float offetX;
 	private float offsetY;
 	
-	protected HitBox()
+	public void init()
 	{
 		this.shape = createShape();
 	}
@@ -39,8 +39,8 @@ public abstract class HitBox {
 	
 	public void moveTo(Position pos)
 	{
-		shape.setTranslateX(pos.getX());
-		shape.setTranslateY(pos.getY());
+		shape.setTranslateX(pos.getX()+offetX);
+		shape.setTranslateY(pos.getY()+offsetY);
 	}
 	
 	public boolean contains(HitBox box)
