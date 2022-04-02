@@ -1,5 +1,6 @@
 package scinde.view;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -37,16 +38,23 @@ public class Loader {
 	public void loadJar() {
 		System.out.println("[loader] load fonts");
 		
-		String[] paths = new String[] {
+		String[] pathsTexture = new String[] {
 				"fond-espace",
 				"fond-supraluminique",
 				"vaisseau",
 				"bouton-menu"
 		};
+		String[] pathsSound = new String[] {
+				"Fight_Music",
+				"Title_Screen_v2"
+		};
 
 		ClassLoader cl = Loader.class.getClassLoader();
-		for(String path : paths) {
+		for(String path : pathsTexture) {
 			this.resources.put(path, new Image(cl.getResourceAsStream(this.rootPath + "texture/" + path + ".png")));
+		}
+		for(String path : pathsSound) {
+			this.resources.put(path, new Media(cl.getResource(this.rootPath + "sound/" + path + ".mp3").toExternalForm()));
 		}
 		
 		System.out.println("Assets loaded");
