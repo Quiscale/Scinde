@@ -1,10 +1,10 @@
-package scinde.view;
+package scinde.view.scene;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
-import scinde.view.scene.GameScene;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import scinde.view.group.MainPane;
 
-public class IHM extends Application {
+public class GameScene extends Scene {
 
 	// ////////////////////////////////////////////////////////////////////////
 	// Attributes
@@ -14,18 +14,21 @@ public class IHM extends Application {
 	// Constructors
 	// ////////////////////////////////////////////////////////////////////////
 
+	private GameScene(Parent parent) {
+		super(parent, 1280, 720);
+	}
+	
 	// ////////////////////////////////////////////////////////////////////////
 	// Methods
 	// ////////////////////////////////////////////////////////////////////////
 
-	@Override
-	public void start(Stage stage) throws Exception {
+	public static GameScene create() {
 		
-		stage.setScene(GameScene.create());
-		stage.show();
+		MainPane pane = new MainPane();
 		
+		return new GameScene(pane);
 	}
-
+	
 	// ////////////////////////////////////////////////////////////////////////
 	// Overrides
 	// ////////////////////////////////////////////////////////////////////////

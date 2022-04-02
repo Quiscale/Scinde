@@ -1,10 +1,11 @@
-package scinde.view;
+package scinde.view.node;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
-import scinde.view.scene.GameScene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.transform.Translate;
+import scinde.Main;
 
-public class IHM extends Application {
+public class PlayButton extends ImageView {
 
 	// ////////////////////////////////////////////////////////////////////////
 	// Attributes
@@ -14,17 +15,18 @@ public class IHM extends Application {
 	// Constructors
 	// ////////////////////////////////////////////////////////////////////////
 
+	public PlayButton() {
+		super();
+		
+		Image img = Main.LOADER.get("bouton-menu").asImage();
+		this.setImage(img);
+
+		this.getTransforms().add(new Translate(-img.getWidth()/2, 0));
+	}
+	
 	// ////////////////////////////////////////////////////////////////////////
 	// Methods
 	// ////////////////////////////////////////////////////////////////////////
-
-	@Override
-	public void start(Stage stage) throws Exception {
-		
-		stage.setScene(GameScene.create());
-		stage.show();
-		
-	}
 
 	// ////////////////////////////////////////////////////////////////////////
 	// Overrides

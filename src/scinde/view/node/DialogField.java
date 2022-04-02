@@ -1,10 +1,6 @@
-package scinde.view;
+package scinde.view.node;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
-import scinde.view.scene.GameScene;
-
-public class IHM extends Application {
+public class DialogField {
 
 	// ////////////////////////////////////////////////////////////////////////
 	// Attributes
@@ -14,17 +10,13 @@ public class IHM extends Application {
 	// Constructors
 	// ////////////////////////////////////////////////////////////////////////
 
+	public DialogField() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	// ////////////////////////////////////////////////////////////////////////
 	// Methods
 	// ////////////////////////////////////////////////////////////////////////
-
-	@Override
-	public void start(Stage stage) throws Exception {
-		
-		stage.setScene(GameScene.create());
-		stage.show();
-		
-	}
 
 	// ////////////////////////////////////////////////////////////////////////
 	// Overrides

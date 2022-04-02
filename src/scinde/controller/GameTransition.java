@@ -1,10 +1,8 @@
-package scinde.view;
+package scinde.controller;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
-import scinde.view.scene.GameScene;
+import scinde.view.node.ShipView;
 
-public class IHM extends Application {
+public class GameTransition {
 
 	// ////////////////////////////////////////////////////////////////////////
 	// Attributes
@@ -17,15 +15,22 @@ public class IHM extends Application {
 	// ////////////////////////////////////////////////////////////////////////
 	// Methods
 	// ////////////////////////////////////////////////////////////////////////
-
-	@Override
-	public void start(Stage stage) throws Exception {
+	
+	public static void startGame(ShipView ship) {
 		
-		stage.setScene(GameScene.create());
-		stage.show();
+		// Zoomer sur le vaisseau
+		ship.zoomCockpit();
+		
+		// Faire parler le joueur
+		
+		// Afficher travail flo
 		
 	}
-
+	
+	public void goToSuperluminal() {
+		
+	}
+	
 	// ////////////////////////////////////////////////////////////////////////
 	// Overrides
 	// ////////////////////////////////////////////////////////////////////////
