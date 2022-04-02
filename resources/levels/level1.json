@@ -1,0 +1,27 @@
+{
+	"left": {
+		"enemies":[
+			{
+				"position": {"x":5, "y":5},
+				"id":"moula"
+			}
+		],		
+		"hitboxgroups":[
+			{
+				"hitboxes":[
+					{
+						"type":"rectangle",
+						"width":10,
+						"height":5
+					}
+				],						
+				"position": {"x":10, "y":2.5}
+			}
+		]
+	},
+	"right":{
+	},
+	"player":{
+		"position":{"x":0, "y":0}
+	}
+}
