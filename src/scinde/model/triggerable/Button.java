@@ -18,6 +18,10 @@ public abstract class Button extends Triggerable{
 
 	public void onTrigger(World word, EntityHolder holder)
 	{
+		if(!buttonState && this.linked.getHitbox().overlap(holder.getHitbox()))
+		{
+			return;
+		}
 		this.buttonState = !this.buttonState;
 		OnButtonPush(word, buttonState);
 	}

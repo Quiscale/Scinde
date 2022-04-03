@@ -7,7 +7,8 @@ import scinde.model.world.World;
 public class DoorButton extends Button{
 
 	protected DoorButton(HitBox box) {
-		super(false, box);
+		super(true, box);
+		
 	}
 
 	@Override

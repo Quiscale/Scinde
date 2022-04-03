@@ -1,5 +1,8 @@
 package scinde.controller;
 
+import scinde.model.level.DualLevel;
+import scinde.model.level.LevelManager;
+import scinde.model.utils.Position;
 import scinde.view.IHM;
 
 public class GameController {
@@ -108,6 +111,16 @@ public class GameController {
 
 		this.action_i = 0;
 		this.actions[this.action_i].handle();
+
+		
+		IHM.PANE.SHIP.setOnMouseClicked((event)->{
+			if(LevelManager.level().isDual())
+			{
+				DualLevel level = LevelManager.level().asDual();
+				level.getPlayer().useLeft(level.getLeft(), new Position(event.getX(), event.getY()));
+				level.getPlayer().useRight(level.getRight(), new Position(event.getX(), event.getY()));
+			}
+		});
 		
 	}
 

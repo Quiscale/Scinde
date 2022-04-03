@@ -73,12 +73,14 @@ public class PlayerHolder extends EntityHolder{
 	
 	public void useLeft(World world, Position target)
 	{
-		left.use(world, target, this);
+		if(left != null)
+			left.use(world, target, this);
 	}
 	
 	public void useRight(World world, Position target)
 	{
-		left.use(world, target, this);
+		if(right != null)
+			right.use(world, target, this);
 	}
 	
 	public void unlockLeft(Weapon weapon)
