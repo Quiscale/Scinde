@@ -20,12 +20,17 @@ public class Moula extends Enemy{
 	}
 
 	@Override
-	public void onHit(World world, Position pos, EntityHolder self, EntityHolder other) {
+	public void onHitBy(World world, Position pos, EntityHolder self, EntityHolder other) {
 		System.out.println("lp : "+self.getLifePoints()+"/"+self.getEntity().getMaxLifePoints());
 	}
 
 	@Override
 	public void onUpdate(List<World> worlds, EntityHolder self) {
+		
+	}
+
+	@Override
+	public void onHit(World world, Position pos, EntityHolder self, EntityHolder other) {
 		
 	}
 }

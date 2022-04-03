@@ -13,7 +13,7 @@ import scinde.model.world.World;
 
 public class EntityHolder implements IUpdatable {
 
-	private static final float SLOW_COEFFICIENT = 0.2f;
+	private static final float SLOW_COEFFICIENT = 0.05f;
 	private static final float ENERGY_CONSERVATION = 0.9f;
 
 	private Entity entity;
@@ -42,11 +42,12 @@ public class EntityHolder implements IUpdatable {
 		System.out.println(entity + " vs " + from.entity);
 		if (entity.canDamage(from.entity) && from.invincibilityTime <= 0) {
 			from.lifePoints -= entity.getDamage();
+			from.entity.onHitBy(world, from.pos, from, this);
 			entity.onHit(world, pos, this, from);
 		}
 
 		double medianMag = (velocity.getMagnitude() + from.getVelocity().getMagnitude()) / 2;
-		velocity = Velocity.createVector(contactPoint, pos).inverse().toUnit().mult(medianMag)
+		velocity = Velocity.createVector(from.pos, pos).toUnit().mult(medianMag)
 				.mult(1 + entity.bouncyness).mult(ENERGY_CONSERVATION);
 
 		if (pattern != null) {
@@ -112,9 +113,9 @@ public class EntityHolder implements IUpdatable {
 			pattern.inverse();
 			pattern.waitNext();
 		}
-		Velocity mark = Velocity.createVector(contactPoint, pos).toUnit();
-		double angle = velocity.inverse().angle(mark);
-		velocity = velocity.rotate(angle * 2f).mult(1 + entity.bouncyness).mult(ENERGY_CONSERVATION).mult(0.60);
+		velocity = velocity.inverse();
+		move();
+		velocity = velocity.inverse();
 
 		entity.onHitWall(world, this);
 	}
@@ -134,6 +135,7 @@ public class EntityHolder implements IUpdatable {
 			}
 			return;
 		}
+		System.out.println(this.velocity);
 		this.move();
 		for (World world : worlds) {
 			world.detectCollision(this);

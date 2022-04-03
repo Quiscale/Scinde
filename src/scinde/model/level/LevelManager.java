@@ -19,37 +19,31 @@ import scinde.model.world.WorldMaker;
 
 public class LevelManager {
 
-
 	private InputStream levelStream;
-	private Level currentLevel;
-	
+	private AbstractLevel currentLevel;
+
 	public static final LevelManager instance = new LevelManager();
-	
-	private LevelManager()
-	{
+
+	private LevelManager() {
 	}
-	
-	public Level getCurrentLevel()
-	{
+
+	public AbstractLevel getCurrentLevel() {
 		return currentLevel;
 	}
-	
-	public void reloadCurrent()
-	{
+
+	public void reloadCurrent() {
 		try {
 			load(currentLevel.getName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	public static Level level()
-	{
+
+	public static AbstractLevel level() {
 		return instance.currentLevel;
 	}
-	
-	public void load(String levelName) throws Exception
-	{
+
+	public void load(String levelName) throws Exception {
 		levelStream = WorldMaker.class.getResourceAsStream("/assets/scinde/levels/" + levelName + ".json");
 		String json = "";
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(levelStream))) {
@@ -61,27 +55,33 @@ public class LevelManager {
 			throw e;
 		}
 		JSONObject object = new JSONObject(json);
-		if(!object.has("left") || !object.has("right") || !object.has("player"))
-		{
-			throw new Exception("Invalid level object for level "+levelName);
-		}
-		World left = new WorldMaker().make(object.getJSONObject("left"));
-		World right = new WorldMaker().make(object.getJSONObject("right"));
-		
-		JSONObject position = object.getJSONObject("player").getJSONObject("position");
-		String id = "player";
-		Entity data = Registry.ENTITY.get(new Identifier(id));
-		if(data instanceof Player player)
-		{
-			PlayerHolder entity = new PlayerHolder(player);
-			if (position != null) {
-				entity.setPosition(new Position(position.getFloat("x"), position.getFloat("y")));
+		if (object.has("left") && object.has("right")) {
+			World left = new WorldMaker().make(object.getJSONObject("left"));
+			World right = new WorldMaker().make(object.getJSONObject("right"));
+
+			JSONObject position = object.getJSONObject("player").getJSONObject("position");
+			String id = "player";
+			Entity data = Registry.ENTITY.get(new Identifier(id));
+			if (data instanceof Player player) {
+				PlayerHolder entity = new PlayerHolder(player);
+				if (position != null) {
+					entity.setPosition(new Position(position.getFloat("x"), position.getFloat("y")));
+				}
+				currentLevel = new DualLevel(levelName, entity, new ArrayList<>(), left, right);
 			}
-			currentLevel = new Level(levelName, entity, new ArrayList<>(), left, right);
-		}
-		else
-		{
-			throw new Exception("Entity of type player not found on the level");
+		} else if(object.has("world")){
+			World world = new WorldMaker().make(object.getJSONObject("world"));
+
+			JSONObject position = object.getJSONObject("player").getJSONObject("position");
+			String id = "player";
+			Entity data = Registry.ENTITY.get(new Identifier(id));
+			if (data instanceof Player player) {
+				PlayerHolder entity = new PlayerHolder(player);
+				if (position != null) {
+					entity.setPosition(new Position(position.getFloat("x"), position.getFloat("y")));
+				}
+				currentLevel = new SingleLevel(levelName, world, entity);
+			}
 		}
 	}
 }

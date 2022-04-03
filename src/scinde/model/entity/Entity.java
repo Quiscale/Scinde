@@ -39,6 +39,8 @@ public abstract class Entity{
 	
 	public abstract float getDamage();
 	
+	public abstract void onHitBy(World world, Position pos, EntityHolder self, EntityHolder other);
+	
 	public abstract void onHit(World world, Position pos, EntityHolder self, EntityHolder other);
 	
 	public abstract void onDeath(World world, Position pos, EntityHolder self);

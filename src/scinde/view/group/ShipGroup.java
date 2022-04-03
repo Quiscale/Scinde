@@ -16,7 +16,9 @@ import scinde.controller.ActionEnd;
 import scinde.model.entity.EntityHolder;
 import scinde.model.entity.enemies.OpenPatternFollower;
 import scinde.model.entity.enemies.PatternFollower;
+import scinde.model.level.DualLevel;
 import scinde.model.level.LevelManager;
+import scinde.model.level.SingleLevel;
 import scinde.model.utils.Position;
 import scinde.model.utils.hitbox.HitBox;
 import scinde.view.node.CharacterView;
@@ -71,6 +73,7 @@ public class ShipGroup extends Group {
 	public void update() {
 		
 		this.character.update();
+		this.showHitboxes();
 	}
 	
 	public void showHitbox(EntityHolder entity)
@@ -118,21 +121,40 @@ public class ShipGroup extends Group {
 		
 		this.hitGroup.getChildren().clear();
 		
-		for(HitBox box : LevelManager.level().getLeft().getBlocks()) {
-			box.getShape().setStroke(Color.GREEN);
-			box.getShape().setFill(null);
-			this.hitGroup.getChildren().add(box.getShape());
-		}
-
-		Shape player = LevelManager.level().getPlayer().getHitbox().getShape();
-		player.setStroke(Color.RED);
-		player.setFill(null);
-		this.hitGroup.getChildren().add(player);
-		
-		for(EntityHolder entity : LevelManager.level().getLeft().getEntities())
+		if(LevelManager.level().isDual())
 		{
-			System.out.println(entity.getEntity());
-			showHitbox(entity);
+			DualLevel level = LevelManager.level().asDual();
+			for(HitBox box : level.getLeft().getBlocks()) {
+				box.getShape().setStroke(Color.GREEN);
+				box.getShape().setFill(null);
+				this.hitGroup.getChildren().add(box.getShape());
+			}
+
+			Shape player = LevelManager.level().getPlayer().getHitbox().getShape();
+			player.setStroke(Color.RED);
+			player.setFill(null);
+			this.hitGroup.getChildren().add(player);
+			
+			for(EntityHolder entity : level.getLeft().getEntities())
+			{
+				System.out.println(entity.getEntity());
+				showHitbox(entity);
+			}
+		}
+		else
+		{
+			SingleLevel level = LevelManager.level().asSingle();
+			for(HitBox box : level.getWorld().getBlocks()) {
+				box.getShape().setStroke(Color.GREEN);
+				box.getShape().setFill(null);
+				this.hitGroup.getChildren().add(box.getShape());
+			}
+			
+			for(EntityHolder entity : level.getWorld().getEntities())
+			{
+				System.out.println(entity.getEntity());
+				showHitbox(entity);
+			}
 		}
 	}
 
