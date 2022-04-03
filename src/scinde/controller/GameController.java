@@ -37,7 +37,7 @@ public class GameController {
 
 				
 				try {
-					LevelMaker.instance.make("level1");
+					LevelMaker.instance.load("level1");
 					
 					new UpdateTimer();
 					

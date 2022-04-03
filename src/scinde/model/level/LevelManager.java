@@ -17,15 +17,15 @@ import scinde.model.utils.Position;
 import scinde.model.world.World;
 import scinde.model.world.WorldMaker;
 
-public class LevelMaker {
+public class LevelManager {
 
 
 	private InputStream levelStream;
 	private Level currentLevel;
 	
-	public static final LevelMaker instance = new LevelMaker();
+	public static final LevelManager instance = new LevelManager();
 	
-	private LevelMaker()
+	private LevelManager()
 	{
 	}
 	
@@ -37,13 +37,18 @@ public class LevelMaker {
 	public void reloadCurrent()
 	{
 		try {
-			make(currentLevel.getName());
+			load(currentLevel.getName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void make(String levelName) throws Exception
+	public static Level level()
+	{
+		return instance.currentLevel;
+	}
+	
+	public void load(String levelName) throws Exception
 	{
 		levelStream = WorldMaker.class.getResourceAsStream("/assets/scinde/levels/" + levelName + ".json");
 		String json = "";
