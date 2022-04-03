@@ -12,11 +12,11 @@ import scinde.model.world.World;
 public class Player extends Entity{
 
 	public Player() {
-		super(3f, true, 0.9f, 0.3, 40);
+		super(3f, true, 0.9f, 3, 40);
 	}
 
 	@Override
-	public void onHit(World world, Position pos, EntityHolder self, EntityHolder other) {
+	public void onHitBy(World world, Position pos, EntityHolder self, EntityHolder other) {
 		System.out.println("ouch!");
 		self.setInvincibleFor(3000);
 	}
@@ -40,5 +40,10 @@ public class Player extends Entity{
 	@Override
 	protected boolean canDamage(Entity entity) {
 		return false;
+	}
+
+	@Override
+	public void onHit(World world, Position pos, EntityHolder self, EntityHolder other) {
+		
 	}
 }

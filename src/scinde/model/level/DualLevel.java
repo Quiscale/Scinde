@@ -6,40 +6,25 @@ import scinde.model.entity.EntityHolder;
 import scinde.model.entity.PlayerHolder;
 import scinde.model.world.World;
 
-public class Level {
+public class DualLevel extends AbstractLevel{
 	
-	private String name;
 	private World left;
 	private World right;
-	private PlayerHolder player;
 	private List<EntityHolder> sharedEntities;
 	
-	private Object lock = new Object();
-	
-	protected Level(String name, PlayerHolder player, List<EntityHolder> shared, World left, World right)
+	protected DualLevel(String name, PlayerHolder player, List<EntityHolder> shared, World left, World right)
 	{
+		super(name, player, true);
 		this.left = left;
 		this.right=right;
-		this.player=player;
-		this.name=name;
 		this.sharedEntities = shared;
-		this.sharedEntities.add(this.player);
+		this.sharedEntities.add(player);
 	}
 	
 	public void triggerInterraction()
 	{
 		left.triggerActivables(player);
 		right.triggerActivables(player);
-	}
-	
-	public PlayerHolder getPlayer()
-	{
-		return player;
-	}
-	
-	public String getName()
-	{
-		return name;
 	}
 	
 	public synchronized void update()

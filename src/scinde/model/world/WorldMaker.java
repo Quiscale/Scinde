@@ -148,27 +148,39 @@ public class WorldMaker {
 		if (object.has("triggerables")) {
 			JSONArray triggers = object.getJSONArray("triggerables");
 			for (int i = 0; i < triggers.length(); i++) {
-				JSONObject position = triggers.getJSONObject(i).getJSONObject("position");
 				JSONObject hitboxObj = triggers.getJSONObject(i).getJSONObject("trigger");
 				String id = triggers.getJSONObject(i).getString("id");
 				HitBox hitbox = null;
 				switch (hitboxObj.getString("type")) {
 				case "circle":
+					JSONObject position = triggers.getJSONObject(i).getJSONObject("position");
 					hitbox = new CircleHitbox(hitboxObj.getFloat("radius"));
+					hitbox.init();
+					hitbox.moveTo(new Position(position.getFloat("x"), position.getFloat("y")));
 					break;
 				case "rectangle":
+					position = triggers.getJSONObject(i).getJSONObject("position");
 					float width = hitboxObj.getFloat("width");
 					float height = hitboxObj.getFloat("height");
 					hitbox = new RectangularHitbox(width, height);
+					hitbox.init();
+					hitbox.moveTo(new Position(position.getFloat("x"), position.getFloat("y")));
 					break;
+				case "polygon":
+					List<Position> points = new ArrayList<>();
+					JSONArray opoints = hitboxObj.getJSONArray("points");
+					for(int j = 0; j<opoints.length(); j++)
+					{
+						points.add(new Position(opoints.getJSONObject(j).getFloat("x"), opoints.getJSONObject(j).getFloat("y")));
+					}		
+					hitbox = new PolygonHitbox(points);
+					hitbox.init();
 				default:
 					System.out.println("WARN : unkown hitbox type " + hitboxObj.getString("type"));
 					break;
 				}
 				if(hitbox != null)
 				{
-					hitbox.init();
-					hitbox.moveTo(new Position(position.getFloat("x"), position.getFloat("y")));
 					world.addTriggerable(Registry.TRIGGER.get(new Identifier(id)).provide(hitbox));
 				}
 			}

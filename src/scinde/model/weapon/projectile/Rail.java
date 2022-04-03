@@ -21,8 +21,8 @@ public class Rail extends Projectile{
 	}
 
 	@Override
-	public void onHit(World world, Position pos, EntityHolder self, EntityHolder other) {
-		self.kill(world);
+	public void onHitBy(World world, Position pos, EntityHolder self, EntityHolder other) {
+		
 	}
 
 	@Override
@@ -34,6 +34,12 @@ public class Rail extends Projectile{
 	@Override
 	public void onUpdate(List<World> worlds, EntityHolder self) {
 		self.setVelocityRaw(self.getVelocity().toUnit().mult(5));
+	}
+
+	@Override
+	public void onHit(World world, Position pos, EntityHolder self, EntityHolder other) {
+		self.kill(world);
+		System.out.println("hit !");
 	}
 	
 }
