@@ -1,10 +1,6 @@
 package scinde.controller;
 
-import scinde.model.level.LevelManager;
-import scinde.model.utils.Position;
-import scinde.model.weapon.Weapons;
 import scinde.view.IHM;
-import scinde.view.group.MainPane;
 
 public class GameController {
 
@@ -29,31 +25,29 @@ public class GameController {
 			() -> {
 				// Start menu sound
 				SoundController.playMenu();
+				new UpdateTimer();
+				
+				IHM.PANE.SHIP.followCharacter();
+				
+				KEYBOARD = new KeyboardController();
+				IHM.PANE.setOnKeyPressed(KEYBOARD);
+				IHM.PANE.setOnKeyReleased(KEYBOARD);
+				IHM.PANE.requestFocus();
 			},
 			
 			// Remove Menu, zoom on ship
 			() -> {
 
-				
-				try {
-					LevelManager.instance.load("level1");
-					
-					new UpdateTimer();
-					
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-				}
-				/*IHM.PANE.SHIP.zoomCockpit()
+				IHM.PANE.SHIP.zoomCockpit()
 					.setOnEnd(() -> {
 						this.nextAction();
-					});*/
-				startGame(IHM.PANE);
+					});
+				
 			},
 			
 			// Make the character speak
 			() -> {
-				IHM.PANE.DIALOG.printText("Tout se joue au clavier (appuyez sur espace pour continuer)")
+				IHM.PANE.DIALOG.printText("Pour passer le texte, cliquez avec la souris")
 					.setOnEnd(() -> {
 						this.nextAction();
 					});
@@ -82,6 +76,15 @@ public class GameController {
 			// Le personnage parle
 			() -> {
 				
+			},
+			
+			// Activation du clavier
+			() -> {
+
+				KEYBOARD = new KeyboardController();
+				IHM.PANE.setOnKeyPressed(KEYBOARD);
+				IHM.PANE.setOnKeyReleased(KEYBOARD);
+				IHM.PANE.requestFocus();
 			}
 		};
 		
@@ -91,34 +94,19 @@ public class GameController {
 	// Methods
 	// ////////////////////////////////////////////////////////////////////////
 
-	public static void startGame(MainPane pane) {
+	public static void startGame() {
 		
-		KEYBOARD = new KeyboardController();
-		pane.setOnKeyPressed(KEYBOARD);
-		pane.setOnKeyReleased(KEYBOARD);
-		pane.requestFocus();
-		LevelManager.level().getPlayer().unlockLeft(Weapons.RAYGUN);
+		/*LevelManager.level().getPlayer().unlockLeft(Weapons.RAYGUN);
 		LevelManager.level().getPlayer().equipNextLeft();
 		LevelManager.level().update();
-		pane.SHIP.showHitboxes();
 		pane.SHIP.setOnMouseClicked(event -> {
 			LevelManager.level().getPlayer().useLeft(
 					LevelManager.level().getLeft(), new Position(event.getX(), event.getY()));
-		});
+		});*/
 	}
 	
 	public void start() {
 
-		try {
-			//LevelMaker.instance.make("level1");
-			
-			//new UpdateTimer();
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 		this.action_i = 0;
 		this.actions[this.action_i].handle();
 	}

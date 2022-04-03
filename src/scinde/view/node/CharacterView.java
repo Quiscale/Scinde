@@ -2,7 +2,9 @@ package scinde.view.node;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.transform.Translate;
 import scinde.Main;
+import scinde.model.level.LevelManager;
 
 public class CharacterView extends ImageView {
 
@@ -10,6 +12,10 @@ public class CharacterView extends ImageView {
 	// Attributes
 	// ////////////////////////////////////////////////////////////////////////
 
+	private double originalX;
+	private double originalY;
+	private Translate originalDiff;
+	
 	// ////////////////////////////////////////////////////////////////////////
 	// Constructors
 	// ////////////////////////////////////////////////////////////////////////
@@ -17,24 +23,38 @@ public class CharacterView extends ImageView {
 	public CharacterView() {
 		super();
 		
+		this.originalX = 0;
+		this.originalY = 0;
+		this.originalDiff = new Translate(0, 0);
+		
 		Image img = Main.LOADER.get("character").asImage();
 		this.setImage(img);
 		
 		this.setPreserveRatio(true);
 		this.setFitWidth(90);
-		
-		this.setTranslateX(888-45);
-		this.setTranslateY(416-45);
-		
-		/*EntityHolder player = Main.GAME.LEVEL.getPlayer();
-
-		this.xProperty().bind(player.getPos().xProperty());
-		this.yProperty().bind(player.getPos().yProperty());*/
 	}
 	
 	// ////////////////////////////////////////////////////////////////////////
 	// Methods
 	// ////////////////////////////////////////////////////////////////////////
+
+	public void update() {
+		
+		double x = LevelManager.level().getPlayer().getPos().getX() -45;
+		double y = LevelManager.level().getPlayer().getPos().getY() -45;
+
+		this.setTranslateX(x);
+		this.setTranslateY(y);
+		
+		double cartAngle = Math.atan2(LevelManager.level().getPlayer().getVelocity().getY(), LevelManager.level().getPlayer().getVelocity().getX());
+		this.setRotate(Math.toDegrees(cartAngle) +90);
+		
+	}
+	
+	public void saveOriginal() {
+		this.originalX = this.getTranslateX();
+		this.originalY = this.getTranslateY();
+	}
 
 	// ////////////////////////////////////////////////////////////////////////
 	// Overrides

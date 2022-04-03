@@ -2,6 +2,7 @@ package scinde;
 
 import javafx.application.Application;
 import scinde.controller.GameController;
+import scinde.model.level.LevelManager;
 import scinde.view.IHM;
 import scinde.view.Loader;
 
@@ -24,6 +25,12 @@ public class Main {
 
 	public static void main(String[] args) {
 		
+		try {
+			LevelManager.instance.load("level0");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		Application.launch(IHM.class, args);
 	}
 	

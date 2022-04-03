@@ -2,6 +2,7 @@ package scinde.controller;
 
 import javafx.animation.AnimationTimer;
 import scinde.model.level.LevelManager;
+import scinde.view.IHM;
 
 public class UpdateTimer extends AnimationTimer {
 	
@@ -41,6 +42,7 @@ public class UpdateTimer extends AnimationTimer {
 			this.lastNow = now;
 
 			LevelManager.level().update();
+			IHM.PANE.SHIP.update();
 		}
 		
 	}

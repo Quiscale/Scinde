@@ -32,6 +32,9 @@ public class ShipGroup extends Group {
 	Translate translate;
 	Group hitGroup;
 	
+	CharacterView character;
+	Translate follower;
+	
 	// ////////////////////////////////////////////////////////////////////////
 	// Constructors
 	// ////////////////////////////////////////////////////////////////////////
@@ -42,6 +45,7 @@ public class ShipGroup extends Group {
 		this.scale.setPivotX(640);
 		this.scale.setPivotY(820);
 		this.translate = new Translate(640-1820/2, 40); //680-1820/16, 580
+		this.follower = null;
 		this.getTransforms().addAll(scale, translate);
 
 		// Ship background
@@ -51,8 +55,8 @@ public class ShipGroup extends Group {
 		this.getChildren().add(ship);
 		
 		// Player
-		CharacterView character = new CharacterView();
-		this.getChildren().add(character);
+		this.character = new CharacterView();
+		this.getChildren().add(this.character);
 		
 		// Hitbox debug
 		this.hitGroup = new Group();
@@ -65,6 +69,11 @@ public class ShipGroup extends Group {
 	// ////////////////////////////////////////////////////////////////////////
 	// Methods
 	// ////////////////////////////////////////////////////////////////////////
+	
+	public void update() {
+		
+		this.character.update();
+	}
 	
 	public void showHitbox(EntityHolder entity)
 	{
@@ -109,6 +118,8 @@ public class ShipGroup extends Group {
 
 	public void showHitboxes() {
 		
+		this.hitGroup.getChildren().clear();
+		
 		for(HitBox box : LevelManager.level().getLeft().getBlocks()) {
 			box.getShape().setStroke(Color.GREEN);
 			box.getShape().setFill(null);
@@ -149,6 +160,13 @@ public class ShipGroup extends Group {
 		}.play();
 		
 		return action;
+	}
+
+	public void followCharacter() {
+		
+		this.follower = new Translate(0, 0);
+		this.getTransforms().add(this.follower);
+		
 	}
 	
 	// ////////////////////////////////////////////////////////////////////////

@@ -32,17 +32,18 @@ public class KeyboardController implements EventHandler<KeyEvent> {
 		Velocity velocityVec = LevelManager.level().getPlayer().getVelocity();
 		
 		if(event.getEventType() == KeyEvent.KEY_PRESSED) {
+			KeyCode code = event.getCode();
 			
-			if(event.getCode() == KeyCode.UP) {
+			if(code == KeyCode.UP || code == KeyCode.Z) {
 				velocityVec.setY(-velocity);
 			}
-			if(event.getCode() == KeyCode.DOWN) {
+			if(code == KeyCode.DOWN || code == KeyCode.S) {
 				velocityVec.setY(+velocity);
 			}
-			if(event.getCode() == KeyCode.LEFT) {
+			if(code == KeyCode.LEFT || code == KeyCode.Q) {
 				velocityVec.setX(-velocity);
 			}
-			if(event.getCode() == KeyCode.RIGHT) {
+			if(code == KeyCode.RIGHT || code == KeyCode.D) {
 				velocityVec.setX(+velocity);
 			}
 		}
