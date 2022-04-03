@@ -8,6 +8,8 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import scinde.model.entity.Door;
+import scinde.model.entity.DoorHolder;
 import scinde.model.entity.Entity;
 import scinde.model.entity.EntityHolder;
 import scinde.model.entity.enemies.Enemy;
@@ -36,10 +38,21 @@ public class WorldMaker {
 				JSONObject position = entities.getJSONObject(i).getJSONObject("position");
 				String id = entities.getJSONObject(i).getString("name");
 				Entity data = Registry.ENTITY.get(new Identifier(id));
-				EntityHolder entity = new EntityHolder(data);
-				registry.put(entities.getJSONObject(i).getInt("id"), entity);
-				entity.setPosition(new Position(position.getFloat("x"), position.getFloat("y")));
-				world.spawnEntity(entity);
+				if(data instanceof Door door)
+				{
+					EntityHolder entity = new DoorHolder(door);
+					registry.put(entities.getJSONObject(i).getInt("id"), entity);
+					entity.setPosition(new Position(position.getFloat("x"), position.getFloat("y")));
+					System.out.println(entity.getHitbox());
+					world.spawnEntity(entity);
+				}
+				else
+				{
+					EntityHolder entity = new EntityHolder(data);
+					registry.put(entities.getJSONObject(i).getInt("id"), entity);
+					entity.setPosition(new Position(position.getFloat("x"), position.getFloat("y")));
+					world.spawnEntity(entity);
+				}
 			}
 		}
 		if (object.has("enemies")) {

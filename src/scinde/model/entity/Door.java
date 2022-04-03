@@ -10,7 +10,7 @@ public class Door extends Entity{
 	private boolean isHorizontal;
 	
 	protected Door(boolean isHorizontal) {
-		super(0, false, 0, 0, 0);
+		super(Integer.MAX_VALUE, false, 0, 0, 0);
 		this.isHorizontal = isHorizontal;
 	}
 	
