@@ -13,11 +13,10 @@ import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 import scinde.controller.ActionEnd;
-import scinde.controller.GameController;
 import scinde.model.entity.EntityHolder;
 import scinde.model.entity.enemies.OpenPatternFollower;
 import scinde.model.entity.enemies.PatternFollower;
-import scinde.model.level.LevelMaker;
+import scinde.model.level.LevelManager;
 import scinde.model.utils.Position;
 import scinde.model.utils.hitbox.HitBox;
 import scinde.view.node.CharacterView;
@@ -110,18 +109,18 @@ public class ShipGroup extends Group {
 
 	public void showHitboxes() {
 		
-		for(HitBox box : LevelMaker.instance.getCurrentLevel().getLeft().getBlocks()) {
+		for(HitBox box : LevelManager.level().getLeft().getBlocks()) {
 			box.getShape().setStroke(Color.GREEN);
 			box.getShape().setFill(null);
 			this.hitGroup.getChildren().add(box.getShape());
 		}
 
-		Shape player = LevelMaker.instance.getCurrentLevel().getPlayer().getHitbox().getShape();
+		Shape player = LevelManager.level().getPlayer().getHitbox().getShape();
 		player.setStroke(Color.RED);
 		player.setFill(null);
 		this.hitGroup.getChildren().add(player);
 		
-		for(EntityHolder entity : LevelMaker.instance.getCurrentLevel().getLeft().getEntities())
+		for(EntityHolder entity : LevelManager.level().getLeft().getEntities())
 		{
 			System.out.println(entity.getEntity());
 			showHitbox(entity);
