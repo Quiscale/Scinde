@@ -13,7 +13,7 @@ import scinde.model.world.World;
 
 public class EntityHolder implements IUpdatable {
 
-	private static final float SLOW_COEFFICIENT = 0.01f;
+	private static final float SLOW_COEFFICIENT = 0.2f;
 	private static final float ENERGY_CONSERVATION = 0.9f;
 
 	private Entity entity;
