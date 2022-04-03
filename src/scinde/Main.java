@@ -26,7 +26,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		try {
-			LevelManager.instance.load("level0");
+			LevelManager.instance.load("level1");
 		}
 		catch (Exception e) {
 			e.printStackTrace();

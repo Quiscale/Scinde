@@ -39,7 +39,6 @@ public class Rail extends Projectile{
 	@Override
 	public void onHit(World world, Position pos, EntityHolder self, EntityHolder other) {
 		self.kill(world);
-		System.out.println("hit !");
 	}
 	
 }

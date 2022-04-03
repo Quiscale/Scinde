@@ -43,7 +43,6 @@ public abstract class Weapon implements IUpdatable {
 					user.getPos().getY() + spawn.getY()));
 			world.spawnEntity(projectile);
 			IHM.PANE.SHIP.showHitbox(projectile);
-			System.out.println("use rail " + target);
 			fireTracker = fireRate;
 			remainingBullets --;
 			if(remainingBullets <= 0)
@@ -51,9 +50,6 @@ public abstract class Weapon implements IUpdatable {
 				reloadTracker = reloadRate;
 				remainingBullets = magazineSize;
 			}
-		}
-		else {
-			System.out.println("wait");
 		}
 	}
 

@@ -1,17 +1,21 @@
 package scinde.model.world;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import scinde.model.entity.Entity;
 import scinde.model.entity.EntityHolder;
 import scinde.model.entity.enemies.Enemy;
 import scinde.model.entity.enemies.OpenPatternFollower;
 import scinde.model.entity.enemies.PatternFollower;
 import scinde.model.registry.Identifier;
 import scinde.model.registry.Registry;
+import scinde.model.triggerable.Triggerable;
 import scinde.model.utils.Position;
 import scinde.model.utils.hitbox.CircleHitbox;
 import scinde.model.utils.hitbox.CustomHitbox;
@@ -22,14 +26,30 @@ import scinde.model.utils.hitbox.RectangularHitbox;
 public class WorldMaker {
 
 	public World make(JSONObject object) {
+		Map<Integer, EntityHolder> registry = new HashMap<>();
 		World world = new World();// TODO : make world
+		if(object.has("entities"))
+		{
+			JSONArray entities = object.getJSONArray("entities");
+			for(int i = 0; i < entities.length(); i++)
+			{
+				JSONObject position = entities.getJSONObject(i).getJSONObject("position");
+				String id = entities.getJSONObject(i).getString("name");
+				Entity data = Registry.ENTITY.get(new Identifier(id));
+				EntityHolder entity = new EntityHolder(data);
+				registry.put(entities.getJSONObject(i).getInt("id"), entity);
+				entity.setPosition(new Position(position.getFloat("x"), position.getFloat("y")));
+				world.spawnEntity(entity);
+			}
+		}
 		if (object.has("enemies")) {
 			JSONArray enemies = object.getJSONArray("enemies");
 			for (int i = 0; i < enemies.length(); i++) {
 				JSONObject position = enemies.getJSONObject(i).getJSONObject("position");
-				String id = enemies.getJSONObject(i).getString("id");
+				String id = enemies.getJSONObject(i).getString("name");
 				Enemy enemy = Registry.ENEMY.get(new Identifier(id));
 				EntityHolder entity = new EntityHolder(enemy);
+				registry.put(enemies.getJSONObject(i).getInt("id"), entity);
 				if (position != null) {
 					entity.setPosition(new Position(position.getFloat("x"), position.getFloat("y")));
 				}
@@ -181,7 +201,13 @@ public class WorldMaker {
 				}
 				if(hitbox != null)
 				{
-					world.addTriggerable(Registry.TRIGGER.get(new Identifier(id)).provide(hitbox));
+					Triggerable trigger = Registry.TRIGGER.get(new Identifier(id)).provide(hitbox);
+
+					if(triggers.getJSONObject(i).has("link"))
+					{
+						trigger.setLinked(registry.get(triggers.getJSONObject(i).getInt("link")));
+					}
+					world.addTriggerable(trigger);
 				}
 			}
 		}

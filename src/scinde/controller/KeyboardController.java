@@ -3,6 +3,8 @@ package scinde.controller;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import scinde.model.level.AbstractLevel;
+import scinde.model.level.DualLevel;
 import scinde.model.level.LevelManager;
 import scinde.model.utils.Velocity;
 
@@ -46,6 +48,15 @@ public class KeyboardController implements EventHandler<KeyEvent> {
 		}
 		if(code == KeyCode.RIGHT || code == KeyCode.D) {
 			KeyboardController.RIGHT = event.getEventType() == KeyEvent.KEY_PRESSED;
+		}
+		if(code == KeyCode.SPACE && event.getEventType() == KeyEvent.KEY_RELEASED) {
+			AbstractLevel level = LevelManager.level();
+			if(level.isDual())
+			{
+				DualLevel dual = level.asDual();
+				dual.getLeft().triggerActivables(level.getPlayer());
+				dual.getRight().triggerActivables(level.getPlayer());
+			}
 		}
 		
 	}

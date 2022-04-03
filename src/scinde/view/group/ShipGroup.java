@@ -20,6 +20,7 @@ import scinde.model.entity.enemies.PatternFollower;
 import scinde.model.level.DualLevel;
 import scinde.model.level.LevelManager;
 import scinde.model.level.SingleLevel;
+import scinde.model.triggerable.Triggerable;
 import scinde.model.utils.Position;
 import scinde.model.utils.hitbox.HitBox;
 import scinde.view.node.CharacterView;
@@ -71,14 +72,7 @@ public class ShipGroup extends Pane {
 			double x = e.getX() -this.character.getTranslateX();
 			double y = e.getY() -this.character.getTranslateY();
 			this.character.setRotate(Math.toDegrees(Math.atan2(y, x)) +90);
-			
-			System.out.println(e.getX() + "," + e.getY() + " - " + this.character.getTranslateX() + "," + this.character.getTranslateY());
 		});
-
-		/*IHM.PANE.SHIP.setOnMouseMoved((e) -> {
-			
-			System.out.println(e.getX() + "," + e.getY() + " - " + this.getTranslateX() + "," + this.getTranslateY());
-		});*/
 		
 	}
 	
@@ -145,6 +139,11 @@ public class ShipGroup extends Pane {
 				box.getShape().setFill(null);
 				this.hitGroup.getChildren().add(box.getShape());
 			}
+			for(HitBox box : level.getRight().getBlocks()) {
+				box.getShape().setStroke(Color.GREEN);
+				box.getShape().setFill(null);
+				this.hitGroup.getChildren().add(box.getShape());
+			}
 
 			Shape player = LevelManager.level().getPlayer().getHitbox().getShape();
 			player.setStroke(Color.RED);
@@ -153,8 +152,23 @@ public class ShipGroup extends Pane {
 			
 			for(EntityHolder entity : level.getLeft().getEntities())
 			{
-				System.out.println(entity.getEntity());
 				showHitbox(entity);
+			}
+			for(EntityHolder entity : level.getRight().getEntities())
+			{
+				showHitbox(entity);
+			}
+			for(Triggerable entity : level.getLeft().getTriggerables())
+			{
+				Shape shape = entity.getTrigger().getShape();
+				shape.setFill(Color.YELLOW);
+				this.hitGroup.getChildren().add(shape);
+			}
+			for(Triggerable entity : level.getRight().getTriggerables())
+			{
+				Shape shape = entity.getTrigger().getShape();
+				shape.setFill(Color.YELLOW);
+				this.hitGroup.getChildren().add(shape);
 			}
 		}
 		else
@@ -168,7 +182,6 @@ public class ShipGroup extends Pane {
 			
 			for(EntityHolder entity : level.getWorld().getEntities())
 			{
-				System.out.println(entity.getEntity());
 				showHitbox(entity);
 			}
 		}

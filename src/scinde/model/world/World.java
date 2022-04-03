@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import scinde.model.entity.EntityHolder;
+import scinde.model.entity.PlayerHolder;
 import scinde.model.triggerable.Triggerable;
 import scinde.model.utils.Position;
 import scinde.model.utils.hitbox.HitBox;
@@ -77,7 +78,7 @@ public class World {
 		return boxes;
 	}
 	
-	public void triggerActivables(EntityHolder fromPrespective)
+	public void triggerActivables(PlayerHolder fromPrespective)
 	{
 		for(Triggerable trigger : triggerables)
 		{

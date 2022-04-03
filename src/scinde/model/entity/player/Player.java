@@ -17,7 +17,6 @@ public class Player extends Entity{
 
 	@Override
 	public void onHitBy(World world, Position pos, EntityHolder self, EntityHolder other) {
-		System.out.println("ouch!");
 		self.setInvincibleFor(3000);
 	}
 

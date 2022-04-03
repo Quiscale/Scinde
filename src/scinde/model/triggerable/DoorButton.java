@@ -1,5 +1,6 @@
 package scinde.model.triggerable;
 
+import scinde.model.entity.DoorHolder;
 import scinde.model.utils.hitbox.HitBox;
 import scinde.model.world.World;
 

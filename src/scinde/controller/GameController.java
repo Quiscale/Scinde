@@ -42,7 +42,6 @@ public class GameController {
 			() -> {
 				IHM.PANE.DIALOG.printText("Pour passer le texte, cliquez avec la souris")
 					.setOnEnd(() -> {
-						this.nextAction();
 					});
 			},
 			() -> {
@@ -108,6 +107,7 @@ public class GameController {
 
 		this.action_i = 0;
 		this.actions[this.action_i].handle();
+		
 	}
 
 	public void nextAction() {
@@ -115,6 +115,12 @@ public class GameController {
 		this.action_i += 1;
 		this.actions[this.action_i].handle();
 		
+	}
+
+	public void startSuperluminal() {
+		System.out.println(action_i);
+		if(action_i == 2)
+			nextAction();
 	}
 	
 	// ////////////////////////////////////////////////////////////////////////

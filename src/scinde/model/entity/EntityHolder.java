@@ -18,9 +18,9 @@ public class EntityHolder implements IUpdatable {
 
 	private Entity entity;
 	private Position pos;
-	private Velocity velocity;
+	protected Velocity velocity;
 	private float lifePoints;
-	private HitBox hitbox;
+	protected HitBox hitbox;
 	private PatternFollower pattern;
 	private int invincibilityTime;
 
@@ -39,16 +39,15 @@ public class EntityHolder implements IUpdatable {
 	}
 
 	public void hit(World world, EntityHolder from, Position contactPoint) {
-		System.out.println(entity + " vs " + from.entity);
 		if (entity.canDamage(from.entity) && from.invincibilityTime <= 0) {
 			from.lifePoints -= entity.getDamage();
 			from.entity.onHitBy(world, from.pos, from, this);
 			entity.onHit(world, pos, this, from);
 		}
 
-		double medianMag = (velocity.getMagnitude() + from.getVelocity().getMagnitude()) / 2;
-		velocity = Velocity.createVector(from.pos, pos).toUnit().mult(medianMag)
-				.mult(1 + entity.bouncyness).mult(ENERGY_CONSERVATION);
+		velocity = velocity.inverse();
+		move();
+		velocity = velocity.inverse();
 
 		if (pattern != null) {
 			pattern.follow();
@@ -135,7 +134,6 @@ public class EntityHolder implements IUpdatable {
 			}
 			return;
 		}
-		System.out.println(this.velocity);
 		this.move();
 		for (World world : worlds) {
 			world.detectCollision(this);

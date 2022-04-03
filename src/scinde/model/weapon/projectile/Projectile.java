@@ -22,7 +22,6 @@ public abstract class Projectile extends Entity{
 
 	@Override
 	protected boolean canDamage(Entity entity) {
-		System.out.println(entity instanceof Enemy);
 		return entity instanceof Enemy;
 	}
 	
