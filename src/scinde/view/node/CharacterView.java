@@ -45,6 +45,8 @@ public class CharacterView extends ImageView {
 
 		this.setTranslateX(x);
 		this.setTranslateY(y);
+		this.originalDiff.setX(-(x -this.originalX));
+		this.originalDiff.setY(-(y -this.originalY));
 		
 		double cartAngle = Math.atan2(LevelManager.level().getPlayer().getVelocity().getY(), LevelManager.level().getPlayer().getVelocity().getX());
 		this.setRotate(Math.toDegrees(cartAngle) +90);
@@ -54,6 +56,12 @@ public class CharacterView extends ImageView {
 	public void saveOriginal() {
 		this.originalX = this.getTranslateX();
 		this.originalY = this.getTranslateY();
+		this.originalDiff.setX(0);
+		this.originalDiff.setY(0);
+	}
+	
+	public Translate getTranslateDiff() {
+		return this.originalDiff;
 	}
 
 	// ////////////////////////////////////////////////////////////////////////

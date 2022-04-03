@@ -33,7 +33,6 @@ public class ShipGroup extends Group {
 	Group hitGroup;
 	
 	CharacterView character;
-	Translate follower;
 	
 	// ////////////////////////////////////////////////////////////////////////
 	// Constructors
@@ -45,7 +44,6 @@ public class ShipGroup extends Group {
 		this.scale.setPivotX(640);
 		this.scale.setPivotY(820);
 		this.translate = new Translate(640-1820/2, 40); //680-1820/16, 580
-		this.follower = null;
 		this.getTransforms().addAll(scale, translate);
 
 		// Ship background
@@ -163,9 +161,9 @@ public class ShipGroup extends Group {
 	}
 
 	public void followCharacter() {
-		
-		this.follower = new Translate(0, 0);
-		this.getTransforms().add(this.follower);
+
+		this.character.saveOriginal();
+		this.getTransforms().add(this.character.getTranslateDiff());
 		
 	}
 	

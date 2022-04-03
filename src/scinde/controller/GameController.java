@@ -27,8 +27,6 @@ public class GameController {
 				SoundController.playMenu();
 				new UpdateTimer();
 				
-				IHM.PANE.SHIP.followCharacter();
-				
 				KEYBOARD = new KeyboardController();
 				IHM.PANE.setOnKeyPressed(KEYBOARD);
 				IHM.PANE.setOnKeyReleased(KEYBOARD);
@@ -42,6 +40,9 @@ public class GameController {
 					.setOnEnd(() -> {
 						this.nextAction();
 					});
+				
+
+				IHM.PANE.SHIP.followCharacter();
 				
 			},
 			
