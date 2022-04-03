@@ -1,7 +1,5 @@
 package scinde.model.utils.hitbox;
 
-import org.w3c.dom.css.Rect;
-
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 

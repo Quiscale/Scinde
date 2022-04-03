@@ -3,7 +3,6 @@ package scinde.view.node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import scinde.Main;
-import scinde.model.entity.EntityHolder;
 
 public class CharacterView extends ImageView {
 

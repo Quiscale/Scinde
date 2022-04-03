@@ -1,5 +1,6 @@
 package scinde.model.triggerable;
 
+import scinde.model.entity.EntityHolder;
 import scinde.model.utils.hitbox.HitBox;
 import scinde.model.world.World;
 
@@ -15,7 +16,7 @@ public abstract class Button extends Triggerable{
 	public abstract void OnButtonPush(World world, boolean buttonState);
 	
 
-	public void onTrigger(World word)
+	public void onTrigger(World word, EntityHolder holder)
 	{
 		this.buttonState = !this.buttonState;
 		OnButtonPush(word, buttonState);

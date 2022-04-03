@@ -1,6 +1,5 @@
 package scinde.model.triggerable;
 
-import scinde.model.entity.Entity;
 import scinde.model.entity.EntityHolder;
 import scinde.model.utils.hitbox.HitBox;
 import scinde.model.world.World;
@@ -24,5 +23,5 @@ public abstract class Triggerable {
 		return trigger;
 	}
 	
-	public abstract void onTrigger(World word);
+	public abstract void onTrigger(World word, EntityHolder entity);
 }

@@ -3,11 +3,9 @@ package scinde.model.world;
 import java.util.ArrayList;
 import java.util.List;
 
-import scinde.model.entity.Entity;
 import scinde.model.entity.EntityHolder;
 import scinde.model.triggerable.Triggerable;
 import scinde.model.utils.Position;
-import scinde.model.utils.Velocity;
 import scinde.model.utils.hitbox.HitBox;
 
 public class World {
@@ -15,12 +13,16 @@ public class World {
 	private List<EntityHolder> entities;
 	private List<HitBox> blocks;
 	private List<Triggerable> triggerables; 
+	private List<EntityHolder> toSpawn;
+	private List<EntityHolder> toRemove;
 	
 	public World()
 	{
 		entities = new ArrayList<>();
 		blocks = new ArrayList<>();
 		triggerables = new ArrayList<>();
+		toSpawn = new ArrayList<>();
+		toRemove = new ArrayList<>();
 	}
 	
 	public List<HitBox> getBlocks()
@@ -38,9 +40,17 @@ public class World {
 		return triggerables;
 	}
 	
+	public void makeEntitiesUpdate()
+	{
+		this.entities.addAll(toSpawn);
+		toSpawn.clear();
+		this.entities.removeAll(toRemove);
+		toRemove.clear();
+	}
+	
 	public void spawnEntity(EntityHolder e)
 	{
-		this.entities.add(e);
+		this.toSpawn.add(e);
 	}
 	
 	public void addHitbox(HitBox h)
@@ -73,20 +83,22 @@ public class World {
 		{
 			if(trigger.getTrigger().isEnabled() && trigger.getTrigger().overlap(fromPrespective.getHitbox()))
 			{
-				trigger.onTrigger(this);
+				trigger.onTrigger(this, fromPrespective);
 			}
 		}
 	}
 	
 	public boolean detectCollision(EntityHolder entity) {
+		boolean collides = false;
 		for(EntityHolder other : entities)
 		{
 			HitBox otherBox = other.getHitbox();
 			HitBox thisBox = entity.getHitbox();
 			if(other != entity && otherBox != null && otherBox.isEnabled() && thisBox != null && thisBox.isEnabled() && otherBox.overlap(thisBox))
 			{
-				entity.hit(this, other);
-				return true;
+				entity.hit(this, other, HitBox.contactPoint(otherBox, thisBox));
+				other.hit(this, entity, HitBox.contactPoint(otherBox, thisBox));
+				collides = true;
 			}
 		}
 		for(HitBox other : blocks)
@@ -94,11 +106,11 @@ public class World {
 			HitBox thisBox = entity.getHitbox();
 			if(other != null && other.isEnabled() && thisBox != null && thisBox.isEnabled() && other.overlap(thisBox))
 			{
-				entity.getEntity().onHitWall();
-				return true;
+				entity.hitWall(this, HitBox.contactPoint(other, thisBox));
+				collides = true;
 			}
 		}
-		return false;
+		return collides;
 	}
 
 	public EntityHolder getEntityAt(Position pos) {
@@ -110,6 +122,11 @@ public class World {
 			}
 		}
 		return null;
+	}
+
+	public void removeEntity(EntityHolder self) {
+		self.getHitbox().getShape().setVisible(false);
+		toRemove.add(self);
 	}
 	
 }

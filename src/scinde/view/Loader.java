@@ -1,6 +1,5 @@
 package scinde.view;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;

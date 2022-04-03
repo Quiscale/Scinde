@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import scinde.model.entity.Entity;
 import scinde.model.entity.EntityHolder;
+import scinde.model.entity.PlayerHolder;
 import scinde.model.entity.player.Player;
 import scinde.model.registry.Identifier;
 import scinde.model.registry.Registry;
@@ -20,16 +21,31 @@ public class LevelMaker {
 
 
 	private InputStream levelStream;
-	private String levelName;
+	private Level currentLevel;
 	
-	public LevelMaker(String levelName)
+	public static final LevelMaker instance = new LevelMaker();
+	
+	private LevelMaker()
 	{
-		this.levelName = levelName;
-		levelStream = WorldMaker.class.getResourceAsStream("/assets/scinde/levels/" + levelName + ".json");
 	}
 	
-	public Level make() throws Exception
+	public Level getCurrentLevel()
 	{
+		return currentLevel;
+	}
+	
+	public void reloadCurrent()
+	{
+		try {
+			make(currentLevel.getName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void make(String levelName) throws Exception
+	{
+		levelStream = WorldMaker.class.getResourceAsStream("/assets/scinde/levels/" + levelName + ".json");
 		String json = "";
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(levelStream))) {
 			String line;
@@ -50,13 +66,13 @@ public class LevelMaker {
 		JSONObject position = object.getJSONObject("player").getJSONObject("position");
 		String id = "player";
 		Entity data = Registry.ENTITY.get(new Identifier(id));
-		EntityHolder entity = new EntityHolder(data);
-		if (position != null) {
-			entity.setPosition(new Position(position.getFloat("x"), position.getFloat("y")));
-		}
 		if(data instanceof Player player)
 		{
-			return new Level(levelName, entity, new ArrayList<>(), left, right);
+			PlayerHolder entity = new PlayerHolder(player);
+			if (position != null) {
+				entity.setPosition(new Position(position.getFloat("x"), position.getFloat("y")));
+			}
+			currentLevel = new Level(levelName, entity, new ArrayList<>(), left, right);
 		}
 		else
 		{
