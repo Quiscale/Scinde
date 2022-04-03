@@ -145,7 +145,9 @@ public class EntityHolder implements IUpdatable {
 		if (invincibilityTime > 0) {
 			invincibilityTime -= UpdateTimer.ELAPSED_TIME;
 		}
-		this.velocity = velocity.div(1 + SLOW_COEFFICIENT);
+		
+		if(velocity.getMagnitude() > 0.1)
+			this.velocity = velocity.div(1 + SLOW_COEFFICIENT);
 	}
 
 	public void setInvincibleFor(int i) {

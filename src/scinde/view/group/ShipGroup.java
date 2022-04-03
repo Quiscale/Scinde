@@ -5,6 +5,7 @@ import java.util.Random;
 import javafx.animation.Interpolator;
 import javafx.animation.Transition;
 import javafx.scene.Group;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -22,7 +23,7 @@ import scinde.model.utils.hitbox.HitBox;
 import scinde.view.node.CharacterView;
 import scinde.view.node.ShipView;
 
-public class ShipGroup extends Group {
+public class ShipGroup extends Pane {
 
 	// ////////////////////////////////////////////////////////////////////////
 	// Attributes
@@ -40,6 +41,8 @@ public class ShipGroup extends Group {
 
 	public ShipGroup() {
 
+		this.setPrefSize(1820, 2522);
+		
 		this.scale = new Scale(0.5, 0.5);
 		this.scale.setPivotX(640);
 		this.scale.setPivotY(820);
@@ -61,6 +64,19 @@ public class ShipGroup extends Group {
 		//this.hitGroup.setTranslateX(640);
 		//this.hitGroup.setTranslateY(360);
 		this.getChildren().add(this.hitGroup);
+		
+		ship.setOnMouseMoved((e) -> {
+			double x = e.getX() -this.character.getTranslateX();
+			double y = e.getY() -this.character.getTranslateY();
+			this.character.setRotate(Math.toDegrees(Math.atan2(y, x)) +90);
+			
+			System.out.println(e.getX() + "," + e.getY() + " - " + this.character.getTranslateX() + "," + this.character.getTranslateY());
+		});
+
+		/*IHM.PANE.SHIP.setOnMouseMoved((e) -> {
+			
+			System.out.println(e.getX() + "," + e.getY() + " - " + this.getTranslateX() + "," + this.getTranslateY());
+		});*/
 		
 	}
 	

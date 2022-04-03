@@ -5,6 +5,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.transform.Translate;
 import scinde.Main;
 import scinde.model.level.LevelManager;
+import scinde.view.IHM;
 
 public class CharacterView extends ImageView {
 
@@ -47,9 +48,6 @@ public class CharacterView extends ImageView {
 		this.setTranslateY(y);
 		this.originalDiff.setX(-(x -this.originalX));
 		this.originalDiff.setY(-(y -this.originalY));
-		
-		double cartAngle = Math.atan2(LevelManager.level().getPlayer().getVelocity().getY(), LevelManager.level().getPlayer().getVelocity().getX());
-		this.setRotate(Math.toDegrees(cartAngle) +90);
 		
 	}
 	

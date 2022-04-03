@@ -1,6 +1,7 @@
 package scinde.view.node;
 
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -10,7 +11,7 @@ import javafx.scene.text.TextAlignment;
 import scinde.controller.ActionEnd;
 import scinde.view.IHM;
 
-public class DialogField extends Label {
+public class DialogField extends Group {
 
 	// ////////////////////////////////////////////////////////////////////////
 	// Attributes
@@ -21,29 +22,24 @@ public class DialogField extends Label {
 	// ////////////////////////////////////////////////////////////////////////
 
 	public DialogField() {
-		
-		this.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
-		this.setPrefSize(600, 100);
-		this.setTranslateX(-300);
-		this.setPadding(new Insets(20));
-		this.setWrapText(true);
-		this.setTextAlignment(TextAlignment.CENTER);
-		this.setOpacity(0.0);
-		
-		this.setFont(new Font(20));
-		
+		super();
 	}
 
 	public ActionEnd printText(String text) {
-		
+
 		ActionEnd action = new ActionEnd();
+		Label label = new Label(text);
 		
-		this.setText(text);
-		this.setOpacity(1.0);
-		this.requestFocus();
+		label.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+		label.setPrefSize(600, 100);
+		label.setTranslateX(-300);
+		label.setPadding(new Insets(20));
+		label.setWrapText(true);
+		label.setTextAlignment(TextAlignment.CENTER);
+		label.setFont(new Font(20));
 		
-		this.setOnKeyReleased((e) -> {
-			this.setOpacity(0.0);
+		label.setOnMouseClicked((e) -> {
+			this.getChildren().remove(label);
 			IHM.PANE.requestFocus();
 			action.trigger();
 		});

@@ -13,6 +13,10 @@ public class KeyboardController implements EventHandler<KeyEvent> {
 	// ////////////////////////////////////////////////////////////////////////
 
 	private static float velocity = 2;
+	public static boolean UP = false;
+	public static boolean DOWN = false;
+	public static boolean LEFT = false;
+	public static boolean RIGHT = false;
 	
 	// ////////////////////////////////////////////////////////////////////////
 	// Constructors
@@ -29,25 +33,20 @@ public class KeyboardController implements EventHandler<KeyEvent> {
 	@Override
 	public void handle(KeyEvent event) {
 		
-		Velocity velocityVec = LevelManager.level().getPlayer().getVelocity();
+		KeyCode code = event.getCode();
 		
-		if(event.getEventType() == KeyEvent.KEY_PRESSED) {
-			KeyCode code = event.getCode();
-			
-			if(code == KeyCode.UP || code == KeyCode.Z) {
-				velocityVec.setY(-velocity);
-			}
-			if(code == KeyCode.DOWN || code == KeyCode.S) {
-				velocityVec.setY(+velocity);
-			}
-			if(code == KeyCode.LEFT || code == KeyCode.Q) {
-				velocityVec.setX(-velocity);
-			}
-			if(code == KeyCode.RIGHT || code == KeyCode.D) {
-				velocityVec.setX(+velocity);
-			}
+		if(code == KeyCode.UP || code == KeyCode.Z) {
+			KeyboardController.UP = event.getEventType() == KeyEvent.KEY_PRESSED;
 		}
-		
+		if(code == KeyCode.DOWN || code == KeyCode.S) {
+			KeyboardController.DOWN = event.getEventType() == KeyEvent.KEY_PRESSED;
+		}
+		if(code == KeyCode.LEFT || code == KeyCode.Q) {
+			KeyboardController.LEFT = event.getEventType() == KeyEvent.KEY_PRESSED;
+		}
+		if(code == KeyCode.RIGHT || code == KeyCode.D) {
+			KeyboardController.RIGHT = event.getEventType() == KeyEvent.KEY_PRESSED;
+		}
 		
 	}
 	

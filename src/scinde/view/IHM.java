@@ -25,7 +25,8 @@ public class IHM extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		
-		IHM.PANE = new MainPane();
+		new MainPane();
+		// IHM.PANE is set in MainPane
 		
 		stage.setScene(new Scene(IHM.PANE, 1280, 720));
 		stage.show();

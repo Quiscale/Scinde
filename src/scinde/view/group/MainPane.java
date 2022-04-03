@@ -2,6 +2,7 @@ package scinde.view.group;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.transform.Translate;
+import scinde.view.IHM;
 import scinde.view.node.DialogField;
 import scinde.view.node.SpaceBackground;
 
@@ -21,12 +22,14 @@ public class MainPane extends Pane {
 	public MainPane() {
 		super();
 		
-		this.SHIP= new ShipGroup();
+		IHM.PANE = this;
+		
+		this.SHIP = new ShipGroup();
 		
 		this.DIALOG = new DialogField();
 		this.DIALOG.getTransforms().add(new Translate(640, 620));
 
-		this.getChildren().addAll(new SpaceBackground(), this.SHIP, new MenuPane(), this.DIALOG);
+		this.getChildren().addAll(new SpaceBackground(), this.SHIP, new MenuPane());
 	}
 	
 	// ////////////////////////////////////////////////////////////////////////
