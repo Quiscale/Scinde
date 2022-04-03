@@ -5,7 +5,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.transform.Translate;
 import scinde.Main;
 import scinde.model.level.LevelManager;
-import scinde.view.IHM;
 
 public class CharacterView extends ImageView {
 

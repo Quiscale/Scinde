@@ -29,7 +29,7 @@ public class MainPane extends Pane {
 		this.DIALOG = new DialogField();
 		this.DIALOG.getTransforms().add(new Translate(640, 620));
 
-		this.getChildren().addAll(new SpaceBackground(), this.SHIP, new MenuPane());
+		this.getChildren().addAll(new SpaceBackground(), this.SHIP, new MenuPane(), this.DIALOG);
 	}
 	
 	// ////////////////////////////////////////////////////////////////////////

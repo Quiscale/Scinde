@@ -26,11 +26,6 @@ public class GameController {
 				// Start menu sound
 				SoundController.playMenu();
 				new UpdateTimer();
-				
-				KEYBOARD = new KeyboardController();
-				IHM.PANE.setOnKeyPressed(KEYBOARD);
-				IHM.PANE.setOnKeyReleased(KEYBOARD);
-				IHM.PANE.requestFocus();
 			},
 			
 			// Remove Menu, zoom on ship
@@ -41,9 +36,6 @@ public class GameController {
 						this.nextAction();
 					});
 				
-
-				IHM.PANE.SHIP.followCharacter();
-				
 			},
 			
 			// Make the character speak
@@ -53,16 +45,30 @@ public class GameController {
 						this.nextAction();
 					});
 			},
+			() -> {
+				IHM.PANE.DIALOG.printText("\"Bon, il serait temps d'aller sur la planète Sc1D. J'ai pas envie d'être en retard pour le tournois !\"")
+					.setOnEnd(() -> {
+						this.nextAction();
+					});
+			},
+			() -> {
+				IHM.PANE.DIALOG.printText("\"Activons le moteur Supraluminique. C'est pas tout, mais il y a 16 années lumières à parcourir...\"")
+					.setOnEnd(() -> {
+						this.nextAction();
+					});
+			},
 			
 			// Il démarre le réacteur
 			() -> {
+				IHM.PANE.SHIP.followCharacter();
 				
+				KEYBOARD = new KeyboardController();
+				IHM.PANE.setOnKeyPressed(KEYBOARD);
+				IHM.PANE.setOnKeyReleased(KEYBOARD);
+				IHM.PANE.requestFocus();
 			},
 			
 			// Temps d'attente
-			() -> {
-				
-			},
 			
 			// Tremblement
 			() -> {
@@ -79,14 +85,6 @@ public class GameController {
 				
 			},
 			
-			// Activation du clavier
-			() -> {
-
-				KEYBOARD = new KeyboardController();
-				IHM.PANE.setOnKeyPressed(KEYBOARD);
-				IHM.PANE.setOnKeyReleased(KEYBOARD);
-				IHM.PANE.requestFocus();
-			}
 		};
 		
 	}

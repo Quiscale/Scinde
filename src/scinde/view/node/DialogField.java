@@ -1,6 +1,7 @@
 package scinde.view.node;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
@@ -35,7 +36,7 @@ public class DialogField extends Group {
 		label.setTranslateX(-300);
 		label.setPadding(new Insets(20));
 		label.setWrapText(true);
-		label.setTextAlignment(TextAlignment.CENTER);
+		label.setAlignment(Pos.CENTER);
 		label.setFont(new Font(20));
 		
 		label.setOnMouseClicked((e) -> {
@@ -43,6 +44,8 @@ public class DialogField extends Group {
 			IHM.PANE.requestFocus();
 			action.trigger();
 		});
+		
+		this.getChildren().add(label);
 		
 		return action;
 	}
