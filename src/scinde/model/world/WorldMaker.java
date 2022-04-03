@@ -16,6 +16,7 @@ import scinde.model.utils.Position;
 import scinde.model.utils.hitbox.CircleHitbox;
 import scinde.model.utils.hitbox.CustomHitbox;
 import scinde.model.utils.hitbox.HitBox;
+import scinde.model.utils.hitbox.PolygonHitbox;
 import scinde.model.utils.hitbox.RectangularHitbox;
 
 public class WorldMaker {
@@ -73,16 +74,39 @@ public class WorldMaker {
 			List<HitBox> hitboxGroup = new ArrayList<>();
 			for (int j = 0; j < hitboxes.length(); j++) {
 				String type = hitboxes.getJSONObject(j).getString("type");
-				JSONObject position = hitboxes.getJSONObject(j).getJSONObject("position");
 				HitBox hitbox = null;
 				switch (type) {
 				case "circle":
+					JSONObject position = hitboxes.getJSONObject(j).getJSONObject("position");
 					hitbox = new CircleHitbox(hitboxes.getJSONObject(j).getFloat("radius"));
+					hitbox.init();
+					if(hitboxes.getJSONObject(j).has("angle"))
+					{
+						hitbox.rotate(hitboxes.getJSONObject(j).getFloat("angle"));
+					}
+					hitbox.moveTo(new Position(position.getFloat("x"), position.getFloat("y")));
 					break;
 				case "rectangle":
+					position = hitboxes.getJSONObject(j).getJSONObject("position");
 					float width = hitboxes.getJSONObject(j).getFloat("width");
 					float height = hitboxes.getJSONObject(j).getFloat("height");
 					hitbox = new RectangularHitbox(width, height);
+					hitbox.init();
+					if(hitboxes.getJSONObject(j).has("angle"))
+					{
+						hitbox.rotate(hitboxes.getJSONObject(j).getFloat("angle"));
+					}
+					hitbox.moveTo(new Position(position.getFloat("x"), position.getFloat("y")));
+					break;
+				case "polygon":
+					List<Position> points = new ArrayList<>();
+					JSONArray opoints = hitboxes.getJSONObject(j).getJSONArray("points");
+					for(int i = 0; i<opoints.length(); i++)
+					{
+						points.add(new Position(opoints.getJSONObject(i).getFloat("x"), opoints.getJSONObject(i).getFloat("y")));
+					}		
+					hitbox = new PolygonHitbox(points);
+					hitbox.init();
 					break;
 				default:
 					System.out.println("WARN : unkown hitbox type " + type);
@@ -90,12 +114,6 @@ public class WorldMaker {
 				}
 				if(hitbox != null)
 				{
-					hitbox.init();
-					if(hitboxes.getJSONObject(j).has("angle"))
-					{
-						hitbox.rotate(hitboxes.getJSONObject(j).getFloat("angle"));
-					}
-					hitbox.moveTo(new Position(position.getFloat("x"), position.getFloat("y")));
 					List<HitBox> customs = new ArrayList<>();
 					customs.add(hitbox);
 					for(HitBox box : hitboxGroup)

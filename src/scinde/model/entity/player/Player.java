@@ -4,6 +4,7 @@ import java.util.List;
 
 import scinde.model.entity.Entity;
 import scinde.model.entity.EntityHolder;
+import scinde.model.entity.enemies.Enemy;
 import scinde.model.level.LevelManager;
 import scinde.model.utils.Position;
 import scinde.model.world.World;
