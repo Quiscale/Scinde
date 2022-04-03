@@ -1,7 +1,5 @@
 package scinde.model.utils.hitbox;
 
-import java.util.List;
-
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 

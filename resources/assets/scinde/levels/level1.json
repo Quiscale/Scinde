@@ -1,34 +1,15 @@
 {
 	"left": {
-		"enemies":[
+		"enemies":[		
 			{
-				"position": {"x":-10, "y":-10},
-				"id":"moula",
+				"position": {"x":600, "y":320},
+				"id":"moule_a",
 				"pattern":{
 					"points":[
-						{"x":0, "y":0},
-						{"x":200, "y":0},
-						{"x":200, "y":100}
-					],
-					"islooping":false,
-					"startreverse":true
-				}
-			},				
-			{
-				"position": {"x":-100, "y":-10},
-				"id":"moula"
-			},		
-			{
-				"position": {"x":100, "y":10},
-				"id":"moula",
-				"pattern":{
-					"points":[
-						{"x":100, "y":10},
-						{"x":-200, "y":0},					
-						{"x":100, "y":56},					
-						{"x":0, "y":-10},
-						{"x":-10, "y":25},
-						{"x":200, "y":-100}
+						{"x":600, "y":320},
+						{"x":900, "y":320},					
+						{"x":900, "y":500},					
+						{"x":600, "y":500}
 					],
 					"islooping":true
 				}
@@ -37,16 +18,9 @@
 		"hitboxes":[
 			{
 				"type":"rectangle",
-				"width":100,
-				"height":10,	
-				"position": {"x":100, "y":50}
-			},			
-			{
-				"type":"rectangle",
-				"width":100,
-				"height":10,	
-				"position": {"x":100, "y":50},
-				"angle":60
+				"width":300,
+				"height":100,	
+				"position": {"x":700, "y":500}
 			}
 		]
 	},

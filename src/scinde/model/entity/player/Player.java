@@ -3,7 +3,9 @@ package scinde.model.entity.player;
 import java.util.List;
 
 import scinde.model.entity.Entity;
+import scinde.model.entity.EntityHolder;
 import scinde.model.entity.enemies.Enemy;
+import scinde.model.level.LevelMaker;
 import scinde.model.utils.Position;
 import scinde.model.utils.hitbox.CircleHitbox;
 import scinde.model.utils.hitbox.HitBox;
@@ -11,32 +13,25 @@ import scinde.model.weapon.Weapon;
 import scinde.model.world.World;
 
 public class Player extends Entity{
-	
-	private Weapon left;
-	private Weapon right;
 
 	public Player() {
-		super(3f, true, 2, 0.3);
+		super(3f, true, 0.9f, 0.3, 40);
 	}
 
 	@Override
-	public void onHit(World world, Position pos, Entity other) {
+	public void onHit(World world, Position pos, EntityHolder self, EntityHolder other) {
 		System.out.println("ouch!");
+		self.setInvincibleFor(3000);
 	}
 
 	@Override
-	public void onDeath(World world, Position pos) {
-		world.getEntityAt(pos).setInvincibleFor(3000);
+	public void onDeath(World world, Position pos, EntityHolder self) {
+		LevelMaker.instance.reloadCurrent();
 	}
 
 	@Override
-	public void onUpdate(List<World> worlds) {
+	public void onUpdate(List<World> worlds, EntityHolder self) {
 		
-	}
-
-	@Override
-	public HitBox provideHitbox() {
-		return new CircleHitbox(10);
 	}
 
 	@Override
@@ -47,6 +42,6 @@ public class Player extends Entity{
 
 	@Override
 	protected boolean canDamage(Entity entity) {
-		return entity instanceof Enemy;
+		return false;
 	}
 }

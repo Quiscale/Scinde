@@ -9,18 +9,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Translate;
 import javafx.util.Duration;
 import scinde.controller.ActionEnd;
 import scinde.controller.GameController;
-import scinde.model.entity.Entity;
 import scinde.model.entity.EntityHolder;
-import scinde.model.entity.enemies.Enemy;
 import scinde.model.entity.enemies.OpenPatternFollower;
 import scinde.model.entity.enemies.PatternFollower;
+import scinde.model.level.LevelMaker;
 import scinde.model.utils.Position;
 import scinde.model.utils.hitbox.HitBox;
 import scinde.view.node.CharacterView;
@@ -69,59 +66,65 @@ public class ShipGroup extends Group {
 	// ////////////////////////////////////////////////////////////////////////
 	// Methods
 	// ////////////////////////////////////////////////////////////////////////
+	
+	public void showHitbox(EntityHolder entity)
+	{
+		Random rand = new Random();
+		Color color = new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1);
+		entity.getHitbox().getShape().setStroke(color);
+		entity.getHitbox().getShape().setFill(null);
+		this.hitGroup.getChildren().add(entity.getHitbox().getShape());
+		if(entity.getPattern() != null)
+		{
+			PatternFollower pattern = entity.getPattern();
+			if(pattern != null && !pattern.getPositions().isEmpty())
+			{
+				Position old = null;
+				for(Position pos : pattern.getPositions())
+				{
+					Circle dot = new Circle(2);
+					dot.setFill(color);
+					dot.setTranslateX(pos.getX());
+					dot.setTranslateY(pos.getY());
+					this.hitGroup.getChildren().add(dot);
+					if(old != null)
+					{
+						Line line = new Line(pos.getX(), pos.getY(), old.getX(), old.getY());
+						line.setStroke(color);
+						this.hitGroup.getChildren().add(line);
+					}
+					old = pos;
+				}
+				if(pattern.getPositions().size()>2 && !(pattern instanceof OpenPatternFollower))
+				{
+					Position first = pattern.getPositions().get(0);
+					Position last = pattern.getPositions().get(pattern.getPositions().size()-1);
+					Line line = new Line(first.getX(), first.getY(), last.getX(), last.getY());
+					line.setStroke(color);
+					line.setFill(color);
+					this.hitGroup.getChildren().add(line);
+				}
+			}
+		}
+	}
 
 	public void showHitboxes() {
 		
-		for(HitBox box : GameController.LEVEL.getLeft().getBlocks()) {
+		for(HitBox box : LevelMaker.instance.getCurrentLevel().getLeft().getBlocks()) {
 			box.getShape().setStroke(Color.GREEN);
 			box.getShape().setFill(null);
 			this.hitGroup.getChildren().add(box.getShape());
 		}
 
-		Shape player = GameController.LEVEL.getPlayer().getHitbox().getShape();
+		Shape player = LevelMaker.instance.getCurrentLevel().getPlayer().getHitbox().getShape();
 		player.setStroke(Color.RED);
 		player.setFill(null);
 		this.hitGroup.getChildren().add(player);
 		
-		for(EntityHolder entity : GameController.LEVEL.getLeft().getEntities())
+		for(EntityHolder entity : LevelMaker.instance.getCurrentLevel().getLeft().getEntities())
 		{
-			Random rand = new Random();
-			Color color = new Color(rand.nextDouble(), rand.nextDouble(), rand.nextDouble(), 1);
-			entity.getHitbox().getShape().setStroke(color);
-			entity.getHitbox().getShape().setFill(null);
-			this.hitGroup.getChildren().add(entity.getHitbox().getShape());
-			if(entity.getPattern() != null)
-			{
-				PatternFollower pattern = entity.getPattern();
-				if(pattern != null && !pattern.getPositions().isEmpty())
-				{
-					Position old = null;
-					for(Position pos : pattern.getPositions())
-					{
-						Circle dot = new Circle(2);
-						dot.setFill(color);
-						dot.setTranslateX(pos.getX());
-						dot.setTranslateY(pos.getY());
-						this.hitGroup.getChildren().add(dot);
-						if(old != null)
-						{
-							Line line = new Line(pos.getX(), pos.getY(), old.getX(), old.getY());
-							line.setStroke(color);
-							this.hitGroup.getChildren().add(line);
-						}
-						old = pos;
-					}
-					if(pattern.getPositions().size()>2 && !(pattern instanceof OpenPatternFollower))
-					{
-						Position first = pattern.getPositions().get(0);
-						Position last = pattern.getPositions().get(pattern.getPositions().size()-1);
-						Line line = new Line(first.getX(), first.getY(), last.getX(), last.getY());
-						line.setStroke(color);
-						line.setFill(color);
-						this.hitGroup.getChildren().add(line);
-					}
-				}
-			}
+			System.out.println(entity.getEntity());
+			showHitbox(entity);
 		}
 	}
 

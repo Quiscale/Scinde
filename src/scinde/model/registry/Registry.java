@@ -14,12 +14,14 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectList;
 import scinde.model.entity.Entities;
 import scinde.model.entity.Entity;
-import scinde.model.entity.EntityBuilder;
 import scinde.model.entity.enemies.Enemies;
 import scinde.model.entity.enemies.Enemy;
-import scinde.model.entity.enemies.EnemyBuilder;
 import scinde.model.triggerable.TriggerProvider;
 import scinde.model.triggerable.Triggerables;
+import scinde.model.weapon.Weapon;
+import scinde.model.weapon.Weapons;
+import scinde.model.weapon.projectile.Projectile;
+import scinde.model.weapon.projectile.Projectiles;
 
 public abstract class Registry<T> implements Iterable<T>{
 	
@@ -87,11 +89,15 @@ public abstract class Registry<T> implements Iterable<T>{
 	public static final Identifier ROOT_KEY = new Identifier("root");
 	public static final RegistryKey<Registry<Entity>> ENTITY_KEY = Registry.createRegistryKey("entity");
 	public static final RegistryKey<Registry<Enemy>> ENEMY_KEY = Registry.createRegistryKey("enemy");
+	public static final RegistryKey<Registry<Weapon>> WEAPON_KEY = Registry.createRegistryKey("weapon");
+	public static final RegistryKey<Registry<Projectile>> PROJECTILE_KEY = Registry.createRegistryKey("projectile");
 	public static final RegistryKey<Registry<TriggerProvider>> TRIGGER_KEY = Registry.createRegistryKey("trigger");
 	
 	public static final Registry<Registry<?>> ROOT = new SimpleRegistry<Registry<?>>(Registry.createRegistryKey("root"));
 	public static final SimpleRegistry<Entity> ENTITY = Registry.create(ENTITY_KEY, ()->Entities.PLAYER);
 	public static final SimpleRegistry<Enemy> ENEMY = Registry.create(ENEMY_KEY, ()->Enemies.MOULA);
+	public static final SimpleRegistry<Weapon> WEAPON = Registry.create(WEAPON_KEY, ()->Weapons.RAYGUN);
+	public static final SimpleRegistry<Projectile> PROJECTILE = Registry.create(PROJECTILE_KEY, ()->Projectiles.RAIL);
 	public static final SimpleRegistry<TriggerProvider> TRIGGER = Registry.create(TRIGGER_KEY, ()->Triggerables.DOOR_BUTTON);
 	
 	private static <T> RegistryKey<Registry<T>> createRegistryKey(String id)
@@ -99,12 +105,6 @@ public abstract class Registry<T> implements Iterable<T>{
 		return RegistryKey.ofRegistry(new Identifier(id));
 	}
 	
-	private static <T> DefaultedRegistry<T> create(RegistryKey<? extends Registry<T>> key, String defaultId, DefaultProvider<T> provider)
-	{
-		return create(key, new DefaultedRegistry<T>(key, new Identifier(defaultId)), provider);
-	}
-	
-	@SuppressWarnings("unused")
 	private static <T> SimpleRegistry<T> create(RegistryKey<? extends Registry<T>> key, DefaultProvider<T> provider)
 	{
 		return create(key, new SimpleRegistry<T>(key), provider);

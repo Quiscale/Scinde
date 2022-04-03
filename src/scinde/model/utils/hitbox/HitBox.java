@@ -1,10 +1,8 @@
 package scinde.model.utils.hitbox;
 
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.PathElement;
 import javafx.scene.shape.Shape;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import scinde.model.utils.Position;
 
@@ -21,6 +19,16 @@ public abstract class HitBox {
 		enabled = true;
 		this.id = currentId++;
 		idText = new Text(id+"");
+	}
+	
+	public static Position contactPoint(HitBox a, HitBox b)
+	{
+		if(a.overlap(b))
+		{
+			Shape inter = Shape.intersect(a.getShape(), b.getShape());
+			return new Position(inter.getBoundsInLocal().getCenterX(), inter.getBoundsInLocal().getCenterY());
+		}
+		return null;
 	}
 	
 	public int getId()

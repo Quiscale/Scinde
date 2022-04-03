@@ -3,6 +3,7 @@ package scinde.controller;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import scinde.model.level.LevelMaker;
 import scinde.model.utils.Velocity;
 
 public class KeyboardController implements EventHandler<KeyEvent> {
@@ -11,7 +12,7 @@ public class KeyboardController implements EventHandler<KeyEvent> {
 	// Attributes
 	// ////////////////////////////////////////////////////////////////////////
 
-	private static float velocity = 10;
+	private static float velocity = 2;
 	
 	// ////////////////////////////////////////////////////////////////////////
 	// Constructors
@@ -28,7 +29,7 @@ public class KeyboardController implements EventHandler<KeyEvent> {
 	@Override
 	public void handle(KeyEvent event) {
 		
-		Velocity velocityVec = GameController.LEVEL.getPlayer().getVelocity();
+		Velocity velocityVec = LevelMaker.instance.getCurrentLevel().getPlayer().getVelocity();
 		
 		if(event.getEventType() == KeyEvent.KEY_PRESSED) {
 			

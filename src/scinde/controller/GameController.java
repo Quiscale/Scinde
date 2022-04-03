@@ -2,6 +2,8 @@ package scinde.controller;
 
 import scinde.model.level.Level;
 import scinde.model.level.LevelMaker;
+import scinde.model.utils.Position;
+import scinde.model.weapon.Weapons;
 import scinde.view.IHM;
 import scinde.view.group.MainPane;
 
@@ -11,9 +13,10 @@ public class GameController {
 	// Attributes
 	// ////////////////////////////////////////////////////////////////////////
 
-	public static Level LEVEL;
 	public GameAction[] actions;
 	private int action_i;
+	
+	public static KeyboardController KEYBOARD;
 	
 	// ////////////////////////////////////////////////////////////////////////
 	// Constructors
@@ -31,11 +34,22 @@ public class GameController {
 			
 			// Remove Menu, zoom on ship
 			() -> {
-				IHM.PANE.SHIP.zoomCockpit()
+
+				
+				try {
+					LevelMaker.instance.make("level1");
+					
+					new UpdateTimer();
+					
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+				/*IHM.PANE.SHIP.zoomCockpit()
 					.setOnEnd(() -> {
 						this.nextAction();
-					});
-				IHM.PANE.SHIP.showHitboxes();
+					});*/
+				startGame(IHM.PANE);
 			},
 			
 			// Make the character speak
@@ -80,31 +94,26 @@ public class GameController {
 
 	public static void startGame(MainPane pane) {
 		
-		KeyboardController keyboard = new KeyboardController();
-		pane.setOnKeyPressed(keyboard);
-		pane.setOnKeyReleased(keyboard);
+		KEYBOARD = new KeyboardController();
+		pane.setOnKeyPressed(KEYBOARD);
+		pane.setOnKeyReleased(KEYBOARD);
 		pane.requestFocus();
-		
-		LevelMaker maker = new LevelMaker("level1");
-		
-		try {
-			LEVEL = maker.make();
-			
-			new UpdateTimer();
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		LevelMaker.instance.getCurrentLevel().getPlayer().unlockLeft(Weapons.RAYGUN);
+		LevelMaker.instance.getCurrentLevel().getPlayer().equipNextLeft();
+		LevelMaker.instance.getCurrentLevel().update();
+		pane.SHIP.showHitboxes();
+		pane.SHIP.setOnMouseClicked(event -> {
+			LevelMaker.instance.getCurrentLevel().getPlayer().useLeft(
+					LevelMaker.instance.getCurrentLevel().getLeft(), new Position(event.getX(), event.getY()));
+		});
 	}
 	
 	public void start() {
 
-		LevelMaker maker = new LevelMaker("level1");
 		try {
-			LEVEL = maker.make();
+			//LevelMaker.instance.make("level1");
 			
-			new UpdateTimer();
+			//new UpdateTimer();
 			
 		}
 		catch (Exception e) {

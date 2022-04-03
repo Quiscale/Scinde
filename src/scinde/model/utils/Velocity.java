@@ -1,7 +1,5 @@
 package scinde.model.utils;
 
-import java.math.MathContext;
-
 public class Velocity {
 	private double x;
 	private double y;
@@ -35,6 +33,12 @@ public class Velocity {
 		return magnitude;
 	}
 	
+	public Velocity rotate(double angle)
+	{
+		return new Velocity(x*Math.cos(angle) - y*Math.sin(angle),
+				x * Math.sin(angle) + y * Math.cos(angle));
+	}
+	
 	public Velocity toUnit()
 	{
 		double magnitude = getMagnitude();
@@ -62,12 +66,12 @@ public class Velocity {
 		return v1.getX()*v2.getX()+v1.getY()*v2.getY();
 	}
 
-	public float angle(Velocity other) {
+	public double angle(Velocity other) {
 		if(this.getMagnitude() == 0 || other.getMagnitude() == 0)
 		{
 			return 0;
 		}
-		return Math.round(Math.acos(dotProduct(this, other)/(getMagnitude()*other.getMagnitude())));
+		return Math.acos(dotProduct(this, other)/(getMagnitude()*other.getMagnitude()));
 	}
 	
 	public String toString()
@@ -75,12 +79,32 @@ public class Velocity {
 		return "["+x+", "+y+"]";
 	}
 
-	public Velocity mult(float f) {
+	public Velocity mult(double f) {
 		return new Velocity(this.x * f, this.y * f);
 	}
 
 	public Velocity div(float f) {
 
 		return new Velocity(this.x / f, this.y / f);
+	}
+
+	public Velocity normal() {
+		return new Velocity(-y, -x);
+	}
+
+	public static Velocity add(Velocity a, Velocity b) {
+		return new Velocity(a.getX()+b.getX(), a.getY()+b.getY());
+	}
+
+	public double absoluteAngle() {
+		Velocity reference = new Velocity(1, 0);
+		return reference.angle(this);
+	}
+	
+	public static Velocity fromAbsoluteAngle(double angle)
+	{
+		double x = Math.cos(angle);
+		double y = Math.sin(angle);
+		return new Velocity(x, y);
 	}
 }

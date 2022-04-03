@@ -2,8 +2,6 @@ package scinde;
 
 import javafx.application.Application;
 import scinde.controller.GameController;
-import scinde.model.level.Level;
-import scinde.model.level.LevelMaker;
 import scinde.view.IHM;
 import scinde.view.Loader;
 

@@ -1,15 +1,13 @@
 package scinde.model.entity;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import scinde.controller.UpdateTimer;
-import scinde.model.entity.enemies.Enemy;
 import scinde.model.entity.enemies.PatternFollower;
-import scinde.model.entity.player.Player;
 import scinde.model.utils.IUpdatable;
 import scinde.model.utils.Position;
 import scinde.model.utils.Velocity;
+import scinde.model.utils.hitbox.CircleHitbox;
 import scinde.model.utils.hitbox.HitBox;
 import scinde.model.world.World;
 
@@ -28,7 +26,7 @@ public class EntityHolder implements IUpdatable {
 
 	public EntityHolder(Entity entity) {
 		this.entity = entity;
-		this.hitbox = entity.provideHitbox();
+		this.hitbox = new CircleHitbox((float) entity.getHitboxSize());
 		this.hitbox.init();
 		this.velocity = new Velocity(0, 0);
 		this.pos = new Position();
@@ -40,21 +38,26 @@ public class EntityHolder implements IUpdatable {
 		return entity;
 	}
 
-	public void hit(World world, EntityHolder from) {
-		if (from.entity.canDamage(entity) && invincibilityTime <= 0) {
-			this.lifePoints -= from.entity.getDamage();
-			entity.onHit(world, pos, from.getEntity());
-			if (lifePoints <= 0) {
-				entity.onDeath(world, pos);
-			}
+	public void hit(World world, EntityHolder from, Position contactPoint) {
+		System.out.println(entity + " vs " + from.entity);
+		if (entity.canDamage(from.entity) && from.invincibilityTime <= 0) {
+			from.lifePoints -= entity.getDamage();
+			entity.onHit(world, pos, this, from);
 		}
 
-		Velocity additive = Velocity.createVector(from.getPos(), pos).toUnit().mult(ENERGY_CONSERVATION);
-		this.setVelocityRaw(additive.mult((float)from.getVelocity().getMagnitude()).mult(1+entity.bouncyness));
-		from.setVelocityRaw(additive.inverse().mult((float)velocity.getMagnitude()).mult(1+from.getEntity().bouncyness));
+		double medianMag = (velocity.getMagnitude() + from.getVelocity().getMagnitude()) / 2;
+		velocity = Velocity.createVector(contactPoint, pos).inverse().toUnit().mult(medianMag)
+				.mult(1 + entity.bouncyness).mult(ENERGY_CONSERVATION);
+
 		if (pattern != null) {
 			pattern.follow();
 		}
+	}
+
+	public void kill(World world) {
+
+		entity.onDeath(world, pos, this);
+		world.removeEntity(this);
 	}
 
 	public float getLifePoints() {
@@ -104,12 +107,16 @@ public class EntityHolder implements IUpdatable {
 		return hitbox;
 	}
 
-	public void hitWall() {
+	public void hitWall(World world, Position contactPoint) {
 		if (pattern != null) {
 			pattern.inverse();
 			pattern.waitNext();
 		}
-		entity.onHitWall();
+		Velocity mark = Velocity.createVector(contactPoint, pos).toUnit();
+		double angle = velocity.inverse().angle(mark);
+		velocity = velocity.rotate(angle * 2f).mult(1 + entity.bouncyness).mult(ENERGY_CONSERVATION).mult(0.60);
+
+		entity.onHitWall(world, this);
 	}
 
 	public Position getPos() {
@@ -121,20 +128,21 @@ public class EntityHolder implements IUpdatable {
 	}
 
 	public void update(List<World> worlds) {
+		if (lifePoints <= 0) {
+			for (World world : worlds) {
+				kill(world);
+			}
+			return;
+		}
 		this.move();
 		for (World world : worlds) {
-			if (world.detectCollision(this)) {
-				setVelocityRaw(getVelocity().inverse());
-				move();
-				setVelocityRaw(getVelocity().inverse());
-			}
-			entity.onUpdate(worlds);
+			world.detectCollision(this);
+			entity.onUpdate(worlds, this);
 		}
 		if (pattern != null) {
 			pattern.follow();
 		}
-		if(invincibilityTime > 0)
-		{
+		if (invincibilityTime > 0) {
 			invincibilityTime -= UpdateTimer.ELAPSED_TIME;
 		}
 		this.velocity = velocity.div(1 + SLOW_COEFFICIENT);

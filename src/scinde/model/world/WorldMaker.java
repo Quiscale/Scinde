@@ -1,13 +1,11 @@
 package scinde.model.world;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import scinde.model.entity.Entity;
 import scinde.model.entity.EntityHolder;
 import scinde.model.entity.enemies.Enemy;
 import scinde.model.entity.enemies.OpenPatternFollower;

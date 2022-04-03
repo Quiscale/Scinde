@@ -34,15 +34,13 @@ public class PatternFollower {
 	
 	public void follow()
 	{
-		double diff = enemy.getPos().diff(pattern.get(tracker));
-		double newVelocityUnit = velocityUnit - (velocityUnit-0.1)/(0.1*diff+1);
-		if(newVelocityUnit <= 0) newVelocityUnit = 0.01;
-		Velocity newVelocity = Velocity.createVector(enemy.getPos(), pattern.get(tracker)).toUnit(newVelocityUnit);
-
 		if (waitingCounter < getWaitingForContinuePattern()) {
 			waitingCounter += UpdateTimer.ELAPSED_TIME;
-			newVelocity = new Velocity(0, 0);
 		} else {
+			double diff = enemy.getPos().diff(pattern.get(tracker));
+			double newVelocityUnit = velocityUnit - (velocityUnit-1)/(0.4*diff+1);
+			if(newVelocityUnit <= 0) newVelocityUnit = 0.01;
+			Velocity newVelocity = Velocity.createVector(enemy.getPos(), pattern.get(tracker)).toUnit(newVelocityUnit);
 			if (diff <= (1 * velocityUnit) || forceNextStep) {
 				if(!forceNextStep)
 					waitingCounter = 0;
@@ -57,8 +55,8 @@ public class PatternFollower {
 					tracker = pattern.size() - 1;
 				newVelocity = Velocity.createVector(enemy.getPos(), pattern.get(tracker)).toUnit(newVelocityUnit);
 			}
+			enemy.setVelocity(newVelocity);
 		}
-		enemy.setVelocity(newVelocity);
 	}
 
 
@@ -67,8 +65,11 @@ public class PatternFollower {
 	}
 
 	public void inverse() {
-		followReverse = !followReverse;
-		forceNextStep = true;
+		if(!forceNextStep)
+		{
+			followReverse = !followReverse;
+			forceNextStep = true;
+		}
 	}
 
 	public void waitNext() {
