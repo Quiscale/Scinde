@@ -4,12 +4,8 @@ import java.util.List;
 
 import scinde.model.entity.Entity;
 import scinde.model.entity.EntityHolder;
-import scinde.model.entity.enemies.Enemy;
-import scinde.model.level.LevelMaker;
+import scinde.model.level.LevelManager;
 import scinde.model.utils.Position;
-import scinde.model.utils.hitbox.CircleHitbox;
-import scinde.model.utils.hitbox.HitBox;
-import scinde.model.weapon.Weapon;
 import scinde.model.world.World;
 
 public class Player extends Entity{
@@ -26,7 +22,7 @@ public class Player extends Entity{
 
 	@Override
 	public void onDeath(World world, Position pos, EntityHolder self) {
-		LevelMaker.instance.reloadCurrent();
+		LevelManager.instance.reloadCurrent();
 	}
 
 	@Override

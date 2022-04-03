@@ -1,11 +1,7 @@
 package scinde.controller;
 
 import javafx.animation.AnimationTimer;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
-import scinde.model.entity.EntityHolder;
-import scinde.model.level.LevelMaker;
-import scinde.view.IHM;
+import scinde.model.level.LevelManager;
 
 public class UpdateTimer extends AnimationTimer {
 	
@@ -44,7 +40,7 @@ public class UpdateTimer extends AnimationTimer {
 		if(now > this.lastNow +ELAPSED_TIME*1000000) { // 100ms
 			this.lastNow = now;
 
-			LevelMaker.instance.getCurrentLevel().update();
+			LevelManager.level().update();
 		}
 		
 	}

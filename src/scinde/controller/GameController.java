@@ -1,7 +1,6 @@
 package scinde.controller;
 
-import scinde.model.level.Level;
-import scinde.model.level.LevelMaker;
+import scinde.model.level.LevelManager;
 import scinde.model.utils.Position;
 import scinde.model.weapon.Weapons;
 import scinde.view.IHM;
@@ -37,7 +36,7 @@ public class GameController {
 
 				
 				try {
-					LevelMaker.instance.load("level1");
+					LevelManager.instance.load("level1");
 					
 					new UpdateTimer();
 					
@@ -98,13 +97,13 @@ public class GameController {
 		pane.setOnKeyPressed(KEYBOARD);
 		pane.setOnKeyReleased(KEYBOARD);
 		pane.requestFocus();
-		LevelMaker.instance.getCurrentLevel().getPlayer().unlockLeft(Weapons.RAYGUN);
-		LevelMaker.instance.getCurrentLevel().getPlayer().equipNextLeft();
-		LevelMaker.instance.getCurrentLevel().update();
+		LevelManager.level().getPlayer().unlockLeft(Weapons.RAYGUN);
+		LevelManager.level().getPlayer().equipNextLeft();
+		LevelManager.level().update();
 		pane.SHIP.showHitboxes();
 		pane.SHIP.setOnMouseClicked(event -> {
-			LevelMaker.instance.getCurrentLevel().getPlayer().useLeft(
-					LevelMaker.instance.getCurrentLevel().getLeft(), new Position(event.getX(), event.getY()));
+			LevelManager.level().getPlayer().useLeft(
+					LevelManager.level().getLeft(), new Position(event.getX(), event.getY()));
 		});
 	}
 	
